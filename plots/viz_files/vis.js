@@ -1,5 +1,5 @@
 var rho_value = 0;
-var n = 100;
+var n = 1000;
 
 
 var $slider = $("#slider");
@@ -59,15 +59,32 @@ var createCorMatrix = function(rho) {
 };
 
 var drawGaussian = function(n, m, sd) {
-    var tmp = [];
+   console.log(n,m,sd)
+   var tmp = [];
    for(i = 0; i < n; i++) {
-    tmp[i] = d3.random.normal(m, sd)(); 
+//     tmp[i] = tmp[i-1]+d3.random.normal(m, sd)(); 
+      tmp[i] = i;
+//    console.log(tmp[i]);
    } 
    return tmp; 
 }
 
-var x = drawGaussian(n, 0, 1),
-y = drawGaussian(n, 0, 1);
+m = 0
+sd = 1
+var x = drawGaussian(n, m, sd);
+//y = drawGaussian(n, 0, 1);
+var tmp = [];
+var temp = 0
+for(i = 0; i < n; i++){
+ var rand = d3.random.normal(m,sd);  //(1*(x[i]*x[i]))+(1*x[i])+0
+ var rand2 = d3.random.normal(m,sd);
+ console.log(rand(),rand2())
+ rand_val = rand()
+ tmp[i] = temp+rand_val
+ temp = tmp[i]
+}
+var y = tmp;
+console.log(y)
 
 var setCorrelation = function(x,y, rho_value) {
     rho = createCorMatrix(rho_value)
@@ -129,11 +146,11 @@ var yAxis = d3.svg.axis()
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");   
 
 
-//x_scale.domain(d3.extent(z, function(d) { return d[0]; })).nice();
-//  y_scale.domain(d3.extent(z, function(d) { return d[1]; })).nice();
+x_scale.domain(d3.extent(z, function(d) { return d[0]; })).nice();
+y_scale.domain(d3.extent(z, function(d) { return d[1]; })).nice();
 
-x_scale.domain([-4,4]);
-y_scale.domain([-4,4]);
+//x_scale.domain([-4,4]);
+//y_scale.domain([-4,4]);
 
     var test=  svg.append("g")
       .attr("class", "x axis")
