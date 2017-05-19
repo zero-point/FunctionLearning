@@ -1,6 +1,8 @@
+// correlation value
 var rho_value = 0;
-var n = 1000;
 
+// no of values
+var n = 1000;
 
 var $slider = $("#slider");
 if ($slider.length > 0) {
@@ -77,7 +79,8 @@ var tmp = [];
 var temp = 0
 for(i = 0; i < n; i++){
  var rand = d3.random.normal(m,sd);  //(1*(x[i]*x[i]))+(1*x[i])+0
- var rand2 = d3.random.normal(m,sd);
+// var rand = i
+ var rand2 = d3.random.normal(m,sd)
  console.log(rand(),rand2())
  rand_val = rand()
  tmp[i] = temp+rand_val
