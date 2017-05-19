@@ -1,0 +1,28 @@
+##Current tasks:
+
+# bar char
+
+axis & resize
+
+
+
+# scatter chart
+
+implement underlying functions
+
+
+
+# context
+
+implement labels and text
+
+
+
+
+
+##Future tasks:
+
+# integrate Reactjs
+
+# implement data collection
+

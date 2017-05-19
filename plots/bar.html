@@ -1,6 +1,7 @@
-<!DOCTYPE html>
+<!DOCTYPE html
+<!-- Simble draggable bar chart with 2 bins -->
 <meta charset="utf-8">
-<link type="text/css" href="./viz_files/bootstrap.min.css" rel="stylesheet">
+<link type="text/css" href="./css/bootstrap.min.css" rel="stylesheet">
 
 <style>
 body {
@@ -81,7 +82,7 @@ svg {
 var data = [{index: 0, value: 9},
             {index: 1, value: 16},
               ];
-//--------------- HORIZONTAL --------------------
+//--------------- HORIZONTAL BAR CHART--------------------
 var widthX = 300,
     heightX = 250,
     delim = 4;
@@ -103,6 +104,8 @@ svgX
     .style('stroke', 'black')
     .attr('width', widthX)
     .attr('height', heightX);
+
+
 // Moveable barChart
 var brushX = d3.brushX()
   .extent(function (d, i) {
@@ -146,7 +149,9 @@ function brushmoveX() {
     d.datum().value= d0[1]; // Change the value of the original data
     update();
 }
-//--------------- VERTICAL --------------------
+
+
+//--------------- VERTICAL BAR CHART--------------------
 var widthY = 600,
     heightY = 400;
 var scaleY = d3.scaleLinear()
@@ -168,6 +173,9 @@ svgY
     .style('fill', '#eee')
     .attr('width', widthY)
     .attr('height', heightY);
+
+
+
 // Moveable barChart
 var brushY = d3.brushY()
   .extent(function (d, i) {
@@ -193,6 +201,8 @@ svgbrushY
     .attr('dy', -5)
     .style('fill', 'white')
     .text(function (d) {return d3.format('.2')(d.value);});
+
+
 function brushendY(){
     if (!d3.event.sourceEvent) return;
     if (d3.event.sourceEvent.type === "brush") return; 
@@ -202,6 +212,8 @@ function brushendY(){
           return [d.value, 0].map(scaleY);})
     };
 }
+
+
 function brushmoveY() { 
     if (!d3.event.sourceEvent) return; 
     if (d3.event.sourceEvent.type === "brush") return;
@@ -211,7 +223,9 @@ function brushmoveY() {
     d.datum().value= d0[0]; // Change the value of the original data
     update();
   }
-  //---------UPDATE VERTICAL and HORIZONTAL
+
+
+//---------UPDATE VERTICAL and HORIZONTAL
 function update(){
     svgbrushX
       .call(brushX.move, function (d){
