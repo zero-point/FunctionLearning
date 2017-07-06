@@ -1,0 +1,263 @@
+<!DOCTYPE html
+<!-- Simble draggable bar chart with 2 bins -->
+<meta charset="utf-8">
+<link type="text/css" href="./css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+body {
+    font-family: "MuseoSans-300";
+    font-size: 18px;
+    text-rendering: optimizeLegibility;
+     -webkit-font-smoothing: antialiased;
+}
+
+.jumbotron.vertical-center {
+  margin-bottom: 0; 
+}
+.vertical-center {
+  min-height: 100%;  
+  min-height: 100vh; 
+
+  display: flex;
+  align-items: center;
+}
+
+.box {
+  display: inline-block;
+ border: 1px solid #aaa;
+}
+
+.selection {
+  fill: steelblue;
+  fill-opacity: 1;
+
+}
+
+svg {
+ border-radius:6px;
+ display: block;
+ margin : auto;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #C8D5DA;
+
+}
+
+.axis .tick line {
+  display: none;
+}
+.axis text {
+  display: none;
+}
+
+.xaxis {
+  stroke: black;
+  stroke-width: 1px;
+}
+
+.data {
+  fill: #30394F;
+}
+</style>
+<body>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<div class="jumbotron vertical-center">
+<div class="container">
+                        <div class="col-md-3">
+                        </div>
+			<div class="col-md-6">
+				<div class="box">
+					<div class="col-md-3">
+						<div class="row">					
+							<div id='horiz'></div>
+						</div>
+					</div>
+					<div class="col-md-6">
+					</div>                 
+				        <div class="col-md-3">
+						<div class="row">					
+							<div id='vert'></div>
+						</div>
+					</div>
+				</div>
+			</div>
+                        <div class="col-md-3">
+                        </div>
+</div>
+</div>
+
+
+
+<script>
+var data = [ {index: 1, value: 16},
+              ];
+var data2 = [ {index: 1, value: 16},
+              ];
+
+//--------------- HORIZONTAL BAR CHART--------------------
+var widthX = 400,
+    heightX = 100,
+    delim = 4;
+var scaleX = d3.scaleLinear()
+    .domain([0, 30])
+    .rangeRound([0, widthX]);
+var y = d3.scaleLinear()
+    .domain([0, data2.length])
+    .rangeRound([0, heightX]);
+var svgX = d3.select('#horiz')
+  .append("svg")
+    .attr("width", widthX)
+    .attr("height", heightX)
+  .append('g');
+svgX
+  .append('rect')
+    .attr('x', 0)
+    .attr('y', 0)
+    .style('stroke', '#eee')
+    .style('fill', '#eee')
+    .attr('width', widthY)
+    .attr('height', heightY);
+
+
+
+// Moveable barChart
+var brushX = d3.brushX()
+  .extent(function (d, i) {
+       return [[0,y(i)+delim/2 ], 
+              [widthX, y(i)+ heightX/data2.length -delim/2]];})
+  .on("brush", brushmoveX)
+  .on("end", brushendX);
+  
+  
+var svgbrushX = svgX
+  .selectAll('.brush')
+    .data(data2)
+  .enter()
+    .append('g')
+      .attr('class', 'brush')
+    .append('g')
+      .call(brushX)
+      .call(brushX.move, function (d){return [0, d.value].map(scaleX);});
+svgbrushX
+  .append('text')
+    .attr('x', function (d){return scaleX(d.value)-10;})
+    .attr('y', function (d, i){return y(i) + y(0.5);})
+    .attr('dy', '.35em')
+    .attr('dx', -15)
+    .style('fill', 'white')
+    .text(function (d) {return d3.format('.2')(d.value);})
+function brushendX(){ 
+    if (!d3.event.sourceEvent) return;
+    if (d3.event.sourceEvent.type === "brush") return; 
+    if (!d3.event.selection) { // just in case of click with no move
+      svgbrushX
+        .call(brushX.move, function (d){
+        return [0, d.value].map(scaleX);});}
+}
+function brushmoveX() { 
+    if (!d3.event.sourceEvent) return;
+    if (d3.event.sourceEvent.type === "brush") return; 
+    if (!d3.event.selection) return;
+    var d0 = d3.event.selection.map(scaleX.invert);
+    var d = d3.select(this).select('.selection');
+    d.datum().value= d0[1]; // Change the value of the original data
+    update();
+}
+
+
+//--------------- VERTICAL BAR CHART--------------------
+var widthY = 100,
+    heightY = 400;
+var scaleY = d3.scaleLinear()
+    .domain([0, 30])
+    .rangeRound([heightY, 0]);
+var x = d3.scaleLinear()
+    .domain([0, data.length])
+    .rangeRound([0, widthY]);
+var svgY = d3.select('#vert')
+  .append("svg")
+    .attr("width", widthY)
+    .attr("height", heightY)
+  .append('g');
+svgY
+  .append('rect')
+    .attr('x', 0)
+    .attr('y', 0)
+    .style('stroke', '#eee')
+    .style('fill', '#eee')
+    .attr('width', widthY)
+    .attr('height', heightY);
+
+
+
+// Moveable barChart
+var brushY = d3.brushY()
+  .extent(function (d, i) {
+       return [[x(i)+ delim/2, 0], 
+              [x(i) + x(1) - delim/2, heightY]];})
+  .on("brush", brushmoveY)
+  .on("end", brushendY);  
+  
+var svgbrushY = svgY
+  .selectAll('.brush')
+    .data(data)
+  .enter()
+    .append('g')
+      .attr('class', 'brush')
+    .append('g')
+      .call(brushY)
+      .call(brushY.move, function (d){return [d.value, 0].map(scaleY);});
+svgbrushY
+  .append('text')
+    .attr('y', function (d){return scaleY(d.value) + 25;})
+    .attr('x', function (d, i){return x(i) + x(0.5);})
+    .attr('dx', '-.60em')
+    .attr('dy', -5)
+    .style('fill', 'white')
+    .text(function (d) {return d3.format('.2')(d.value);});
+
+
+function brushendY(){
+    if (!d3.event.sourceEvent) return;
+    if (d3.event.sourceEvent.type === "brush") return; 
+    if (!d3.event.selection) { // just in case of click with no move
+      svgbrushY
+        .call(brushY.move, function (d){
+          return [d.value, 0].map(scaleY);})
+    };
+}
+
+
+function brushmoveY() { 
+    if (!d3.event.sourceEvent) return; 
+    if (d3.event.sourceEvent.type === "brush") return;
+    if (!d3.event.selection) return; 
+    var d0 = d3.event.selection.map(scaleY.invert);
+    var d = d3.select(this).select('.selection');
+    d.datum().value= d0[0]; // Change the value of the original data
+    update();
+  }
+
+
+//---------UPDATE VERTICAL and HORIZONTAL
+function update(){
+    svgbrushX
+      .call(brushX.move, function (d){
+        return [0, d.value].map(scaleX);})
+      .selectAll('text')
+        .attr('x', function (d){return scaleX(d.value)-10;})
+        .text(function (d) {return d3.format('.2')(d.value);});
+    svgbrushY
+      .call(brushY.move, function (d){
+        return [d.value, 0].map(scaleY);})
+      .selectAll('text')
+        .attr('y', function (d){return scaleY(d.value) + 25;})
+        .text(function (d) {return d3.format('.2')(d.value);});
+  }
+</script>
+
+</body>
+</html>

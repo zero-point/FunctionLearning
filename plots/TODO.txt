@@ -1,5 +1,35 @@
 ##Current tasks:
 
+sending data thru web socket (for both plots): using th JSON format
+
+
+save bar plot data 
+at the 4:0th time data is sent Next appears
+
+
+save scatter data
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+PAST
+
+
+
 # bar char
 
 axis & resize

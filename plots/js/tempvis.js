@@ -2,7 +2,7 @@
 var rho_value = 0;
 
 // no of values
-var n = 100;
+var n = 10;
 
 var $slider = $("#slider");
 if ($slider.length > 0) {
@@ -61,7 +61,7 @@ var createCorMatrix = function(rho) {
 };
 
 var drawGaussian = function(n, m, sd) {
-   console.log(n,m,sd)
+//   console.log(n,m,sd)
    var tmp = [];
    for(i = 0; i < n; i++) {
 //     tmp[i] = tmp[i-1]+d3.random.normal(m, sd)(); 
@@ -73,19 +73,25 @@ var drawGaussian = function(n, m, sd) {
 
 m = 0
 sd = 1
+//var x = Array.from(Array(10).keys());
 var x = drawGaussian(n, m, sd);
+console.log(x)
 //y = drawGaussian(n, 0, 1);
 var tmp = [];
-var temp = 0
+var temp = 0.01
 for(i = 0; i < n; i++){
  var rand = d3.random.normal(m,sd);  //(1*(x[i]*x[i]))+(1*x[i])+0
  var rand2 = d3.random.normal(m,sd)
- console.log(rand(),rand2())
+// console.log(rand(),rand2())
  rand_val = rand()
- tmp[i] = temp+rand_val
+ tmp[i] = temp
  temp = tmp[i]
+ temp += 1
 }
 var y = tmp;
+//var y = x.map(function(x) { return x * 5; });
+//var y = x.map(function(x) x * 5);
+//var y = drawGaussian(n, m, sd);
 console.log(y)
 
 var setCorrelation = function(x,y, rho_value) {
@@ -113,7 +119,6 @@ var setCorrelation = function(x,y, rho_value) {
 }
 var z = setCorrelation(x,y, rho_value);
 
-
 //$('#output').text('z_cor = ' + z_cor);
 
 
@@ -127,7 +132,6 @@ var z = setCorrelation(x,y, rho_value);
 
     var x_scale = d3.scale.linear()
         .range([0, width]);
-
     var y_scale = d3.scale.linear()
         .range([height, 0]);
 
@@ -150,7 +154,6 @@ var yAxis = d3.svg.axis()
 
 x_scale.domain(d3.extent(z, function(d) { return d[0]; })).nice();
 y_scale.domain(d3.extent(z, function(d) { return d[1]; })).nice();
-
 //x_scale.domain([-4,4]);
 //y_scale.domain([-4,4]);
 
@@ -206,8 +209,10 @@ $slider.slider("value", r);
 }    
 
 function dots(z) {
+     console.log(z.map(function(d) {return {x:x_scale(d[0]), y:y_scale(d[1])}}))
+     console.log(x,y)
      var dots = svg.selectAll(".dot")
-      .data(z.map(function(d) {return {x:x_scale(d[0]), y:y_scale(d[1])}}))
+      .data(z.map(function(d) {return {x:y_scale(d[1]), y:y_scale(d[1])}}))
 
       dots.enter().append("circle")
            .attr("class", "dot")
@@ -232,8 +237,7 @@ function dots(z) {
       dots.exit().remove();
 }
 dots(z);
-
-
+/*
 var reg_eq = regression('linear', z).equation;
 
 
@@ -288,7 +292,6 @@ var reg_eq = regression('linear', z).equation;
 
 
 
-
  var change = function(rho, n) {
 
         if(n) {
@@ -327,7 +330,6 @@ reg_eq = regression('linear', z).equation;
     d3.select("#shared-heading").text(d3.round(Math.pow(rho, 2) * 100, 1));
     $slider.slider("value", rho);
       }
-
 
 
 
@@ -445,5 +447,5 @@ venn.intersect2.transition().duration(1000).ease(ease)
   .attr("width", x_intersect); 
 }
 
-  
+*/  
 

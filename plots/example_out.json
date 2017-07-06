@@ -1,0 +1,22 @@
+{
+  "version-id": "1.0",
+  "version-control-id": "0f10986",
+  "condition": "1",
+  "judgements": {
+    "1": {
+      "xValue": "5",
+      "yValue": "5",
+      "timestamp": "2017-04-23T18:28:43.511Z"
+    },
+    "2": {
+      "xValue": "6",
+      "yValue": "6",
+      "timestamp": "2017-04-23T18:29:32.432Z"
+    },
+    "3": {
+      "xValue": "7",
+      "yValue": "7",
+      "timestamp": "2017-04-23T18:30:08.344Z"
+    }
+  }
+}
