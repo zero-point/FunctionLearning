@@ -12,8 +12,9 @@ body {
 }
 
 .jumbotron{
+  padding-top:15px;
+  padding-bottom:0;
   margin-bottom:0;
-  padding-top:46px;
   min-height: 100%;
   min-height: 100vh;
 }
@@ -72,7 +73,7 @@ svg {
 
   <div class="container">
 
-  <p><b>Judgment 1 out of 40</b><br/>
+  <p><b id="judgementCount">Judgment 1 out of 40</b><br/>
   Please predict the new value of the bar on the right, <br/>based on the value of the bar on the left.
     <br/> Hit the 'Space' key to submit your choice.</p>
   </div>
@@ -82,23 +83,45 @@ svg {
             <div class="col-md-1"></div>
   					<div id='vert'></div>
   </div>
-  <div  id="nextScenarioButton"><center>----------<a href="1" class="button"><b>   Next   </b></a>---------</center></div>
+
+  <div style="display:none" id="nextScenarioButton"><center>
+
+    <button type="button" class="btn btn-primary btn-lg" onclick="location.href='test_scatter.html';"><b>Next</b></button>
+
+  </center></div>
 
 </div>
 
 
 <script>
-var data = [ {index: 1, value: 16},
+var judgementCount = 0;
+var data = [ {index: 1, value: 10},
               ];
-var data2 = [ {index: 1, value: 16},
+var data2 = [ {index: 1, value: 0.15},
               ];
 
+function linear(){
+  var dataX = Array.apply(null, {length: 41}).map(Number.call, Number);
+  var dataX = dataX.map(function(x) { return x+1; });
+//  var count = 10;
+//  var dataY = trainX.map(function(x) { count+=1;return x+count*100; });  //linear
+  console.log(dataX);//,dataY);
+//  var data = dataX.map(function(v,i) {return [v, dataY[i]];});
+  return dataX;
+}
+
+var dataX = linear();
+
+function updateData(newHeight){
+
+
+
 //--------------- HORIZONTAL BAR CHART--------------------
-var widthX = 400,
+var widthX = 450,
     heightX = 100,
     delim = 4;
 var scaleX = d3.scaleLinear()
-    .domain([0, 21])
+    .domain([0, 41.4])
     .rangeRound([0, widthX]);
 var y = d3.scaleLinear()
     .domain([0, data2.length])
@@ -118,13 +141,21 @@ svgX
     .attr('width', widthY)
     .attr('height', heightY);
 
+var blueXRect = svgX.append("rect")
+    .attr('x', 2)
+    .attr('y', 2)
+    .style('stroke', 'steelblue')
+    .style('fill', 'steelblue')
+    .attr("width", scaleX(dataX[judgementCount]))
+    .attr("height", 96);
+/*
 // Moveable barChart
 var brushX = d3.brushX()
   .extent(function (d, i) {
        return [[0,y(i)+delim/2 ],
               [widthX, y(i)+ heightX/data2.length -delim/2]];})
-  .on("brush", brushmoveX)
-  .on("end", brushendX);
+  //.on("brush", brushmoveX)
+  //.on("end", brushendX);
 
 var svgbrushX = svgX
   .selectAll('.brush')
@@ -135,7 +166,7 @@ var svgbrushX = svgX
     .append('g')
       .call(brushX)
       .call(brushX.move, function (d){return [0, d.value].map(scaleX);});
-/*svgbrushX
+svgbrushX
   .append('text')
     .attr('x', function (d){return scaleX(d.value)-10;})
     .attr('y', function (d, i){return y(i) + y(0.5);})
@@ -143,6 +174,7 @@ var svgbrushX = svgX
     .attr('dx', -15)
     .style('fill', 'steelblue')
     .text(function (d) {return d3.format('.2')(d.value);})*/
+    /*
 function brushendX(){
     console.log(d3.event);
     if (!d3.event.sourceEvent) return;
@@ -172,13 +204,14 @@ function brushmoveX() {
     d.datum().value= d0[1]; // Change the value of the original data
     update();
 }
-
+*/
 
 //--------------- VERTICAL BAR CHART--------------------
 var widthY = 100,
-    heightY = 400;
+    heightY = 450;
+var coord;
 var scaleY = d3.scaleLinear()
-    .domain([0, 21])
+    .domain([0, 42])
     .rangeRound([heightY, 0]);
 var x = d3.scaleLinear()
     .domain([0, data.length])
@@ -188,9 +221,12 @@ var svgY = d3.select('#vert')
     .attr("width", widthY)
     .attr("height", heightY)
     .attr("style", "outline: 2px solid black;")
-  .append('g');
+  .append('g')
+  .on("mousemove", mousemoved)
+  .on("click", clicked);
 svgY
   .append('rect')
+    .attr("id", "rectangle")
     .attr('x', 0)
     .attr('y', 0)
     .style('stroke', '#eee')
@@ -198,8 +234,59 @@ svgY
     .attr('width', widthY)
     .attr('height', heightY);
 
+if(newHeight!=undefined){
+  data2 = [ {index: 1, value: newHeight},
+  ];
+}
 
+function mousemoved(d){
+  coord = d3.mouse(this);
+};
+function clicked(d){
+  console.log("here");
+  if (d3.event.defaultPrevented) return; // dragged
+//  d3.select(this).on('mousedown.drag', null);
+  var coordinates = d3.mouse(this);
+  console.log(coordinates);
+  if(coordinates[1]>=2){
+    var newHeight = coordinates[1];
+    d3.select("svg").remove();
+    d3.select("#vert").selectAll("svg").remove();
+    updateData(scaleY.invert(newHeight));
 
+    document.onkeyup = function(e) {
+      var key = e.keyCode || e.which;
+      if (key == 32) {
+        console.log("user hit space");
+        if(judgementCount!=40){
+          judgementCount += 1;
+          document.getElementById('judgementCount').innerHTML = "Judgment "+judgementCount+" out of 40";
+          console.log(newHeight);
+      //    submitPoint(newHeight); // and all the rest, also should be JSON
+          d3.select("svg").remove();
+          d3.select("#vert").selectAll("svg").remove();
+          updateData(scaleY.invert(newHeight));
+      }
+      else {
+        svgY.on("click", function(d){});
+        document.getElementById("nextScenarioButton").style="display:inline"; // NextButton to quadratic
+      }
+      //  localStorage.setItem('JSON_output', JSON.stringify(obj));
+      }
+    }
+  }
+};
+console.log(data2[0].value);
+console.log(scaleY(data2[0].value));
+var blueRect = svgY.append("rect")
+    .attr('x', 2)
+    .attr('y', scaleY(data2[0].value))
+    .style('stroke', 'steelblue')
+    .style('fill', 'steelblue')
+    .attr("width", 96)
+    .attr("height", 448-scaleY(data2[0].value));
+
+/*
 // Moveable barChart
 var brushY = d3.brushY()
   .extent(function (d, i) {
@@ -215,8 +302,7 @@ var svgbrushY = svgY
     .append('g')
       .attr('class', 'brush')
     .append('g')
-      .call(brushY)
-      .call(brushY.move, function (d){return [d.value, 0].map(scaleY);});
+      .call(brushY)*/
 /*svgbrushY
   .append('text')
     .attr('y', function (d){return scaleY(d.value) + 25;})
@@ -234,6 +320,7 @@ function brushendY(){
     if (d3.event.sourceEvent.type === "brush") return;
     if (!d3.event.selection) { // just in case of click with no move
 //      console.log(d3.event);
+      console.log(d3.event);
       var dd = d3.event.sourceEvent.y-128;
       console.log(d3.event);
       var new_d= [dd,400];
@@ -280,7 +367,7 @@ function update(){
         .attr('y', function (d){return scaleY(d.value) + 25;})
         .text(function (d) {return d3.format('.2')(d.value);});
   }
-  /*
+
 
 function ChunkWs (theChunkUrl,messageCallback) {
     this.chunkUrl = theChunkUrl;
@@ -307,30 +394,120 @@ function ChunkWs (theChunkUrl,messageCallback) {
     	    this.wso.send(dataStr);
     	    self.doneState = 1;
     }
+
+
 }
 
 ChunkWs.prototype = {
     constructor: ChunkWs
 }
-*/
 
-var judgement_count = 0;
-var obj = {"version-id": "1.0","version-control-id": "0f10986","condition":"1","judgements": {}};
 
-document.onkeyup = function(e) {
-  console.log("pressed " +  e);
-  var key = e.keyCode || e.which;
-  console.log("keyCode? " + key);
-  if (key == 32) { // 83 is the keycode for 's', at least on a macbook air
-    console.log("hit space");
-    judgement_count += 1;
-    obj["judgements"][judgement_count] = new Date();
-    console.log(obj);
-    localStorage.setItem('JSON_output', JSON.stringify(obj));
-  }
+//judgementCount
+var obj = {"version-id": "1.0","session-id": "1","initial-locale":"","condition":"1","judgements": {}};
+
+
+
 }
 
+updateData();
 
+function submitPoint(){
+    var flWebSocket = new WebSocket("ws://somata.inf.ed.ac.uk/fl/ws");
+    flWebSocket.onopen = function() {
+      /*Send a small message to the console once the connection is established */
+      console.log('Connection open!');
+    }
+
+    flWebSocket.onmessage = function(event) {
+      message = JSON.parse(event.data);
+      console.log('webSocket message: ' + message);
+    }
+
+   flWebSocket.onerror = function(error){
+     console.log('webSocket error detected: ' + error);
+   }
+
+   function noteTrial() {
+     $("#infoBox").text("Judgment " + (testI+1) + " out of " + testX.length)
+   }
+
+   var askPhrase = "<p><b id=\"judgementCount\">Judgment 1 out of 40</b><br/>Please predict the new value of the bar on the right, <br/>based on the value of the bar on the left.<br/> Hit the 'Space' key to submit your choice.</p>";
+
+   function flRecordJs(pointNum,blockId,xR,yR) {
+     var clientTime = Date.now();
+     var myData = {"type": "recordPoint", "pointNum": pointNum, "x" : xR, "yHuman" : yR, "clientTime" : clientTime, "blockId" : blockId};
+     var recordUrl = "funcLearnRecord"
+     flWebSocket.send(JSON.stringify(myData));
+    };
+    console.log('hello...');
+    var pageId = randomString(16);
+    var testX = [0.67677,0.68687,0.69697,0.70707,0.71717,0.72727,0.73737,0.74747,0.75758,0.76768,0.77778,0.78788,0.79798,0.80808,0.81818,0.82828,0.83838,0.84848,0.85859,0.86869,0.87879,0.88889,0.89899,0.90909,0.91919,0.92929,0.93939,0.94949,0.9596,0.9697,0.9798,0.9899,1.0];
+    var testI = 4;
+    var f0 = initFL('plotContainer0');
+    var trainX = [0.0,0.010101,0.020202,0.030303,0.040404,0.050505,0.060606,0.070707,0.080808,0.090909,0.10101,0.11111,0.12121,0.13131,0.14141,0.15152,0.16162,0.17172,0.18182,0.19192,0.20202,0.21212,0.22222,0.23232,0.24242,0.25253,0.26263,0.27273,0.28283,0.29293,0.30303,0.31313,0.32323,0.33333,0.34343,0.35354,0.36364,0.37374,0.38384,0.39394,0.40404,0.41414,0.42424,0.43434,0.44444,0.45455,0.46465,0.47475,0.48485,0.49495,0.50505,0.51515,0.52525,0.53535,0.54545,0.55556,0.56566,0.57576,0.58586,0.59596,0.60606,0.61616,0.62626,0.63636,0.64646,0.65657,0.66667];
+    var trainY = [0.5021643932313283,0.5052127791684913,0.5084462970346211,0.512079163916104,0.516217426257688,0.5208383714926241,0.5257959202347728,0.5308890907783711,0.5359626533506755,0.5409381760665102,0.5458483388780319,0.5507928156393179,0.5558827181877005,0.5612062823940025,0.5667978222079882,0.5726540696344421,0.5787227367499134,0.5848632997601292,0.5908568029856404,0.5964287348283321,0.6013045836900894,0.605343825776639,0.6085905790233923,0.6112981130595625,0.6138161033732247,0.6164974934476696,0.6195399969934444,0.6229942679363917,0.626752462434395,0.630664252707534,0.6345989189471826,0.63848946725142,0.6423130216537363,0.64608592213021,0.6498441166282132,0.6536611350400983,0.6576219452414721,0.6618654370290001,0.6665043562376225,0.6716187687501225,0.6772560604971274,0.6833835515264806,0.689886862005634,0.6966516121020399,0.7035144020549153,0.710328172079556,0.716978542343414,0.7234001529421761,0.7295439839476074,0.7354100353597082,0.7409166072980868,0.7459983398584304,0.7505081732560343,0.754348067634429,0.7575343629696926,0.7601977790704515,0.7625180556735665,0.7647566323962901,0.7671095889515618,0.7697730050523206,0.7728449205550363,0.7764397152922569,0.7805737292400604,0.7852306224223687,0.7903123549827122,0.7956391871842299,0.8010150393139824];
+    f0.addPoints(trainX,trainY);
+    var askY = -0.01;
+    var pt = f0.askPoint(testX[testI],askY,askPhrase);
+
+    // Adding previously selected points. Control with a parameter in the future.
+
+
+        f0.apc(0.67677,0.8075,2)
+
+        f0.apc(0.68687,0.815,2)
+
+        f0.apc(0.69697,0.825,2)
+
+        f0.apc(0.70707,0.8325,2)
+
+
+    noteTrial();
+
+    var advFunc = function(advPt) {
+      var modelPoint = v2m(advPt.getX(),advPt.getY());
+
+
+        console.log("showing x=" + advPt.getX() + " y=" + advPt.getY());
+        f0.apc(modelPoint.x,modelPoint.y,2);
+
+      console.log('advFunc on pt:' + advPt.getX());
+      flRecordJs(testI,555,modelPoint.x,modelPoint.y);
+      if(testI < testX.length-1) {
+        testI = testI+1
+        noteTrial();
+        console.log('called advFunc, testI is ' + testI);
+        pt = f0.askPoint(testX[testI],askY);
+      } else {
+        $("#infoBox").text("You've just finished making judgments for that scenario. Click the next button to continue.")
+        $("#plotContainer0").hide();
+        $("#submitPointButton").hide();
+        $("#nextScenarioButton").show();
+        console.log("DONE!");
+      }
+    }
+
+    var submitPointFunc = function() {
+      var chosenY = v2m(0,pt.getY()).y;
+      //$("#infoBox").text(chosenY)
+      if(chosenY < 0) {
+        $("#infoBox").text("You must select a point")
+      } else {
+       f0.submitAndRemove(pt,advFunc);
+      }
+    }
+
+    document.onkeyup = function(e) {
+      console.log("pressed " +  e);
+      var key = e.keyCode || e.which;
+      console.log("keyCode? " + key);
+      if (key == 83) { // 83 is the keycode for 's', at least on a macbook air
+        console.log("hit s")
+        submitPointFunc()
+      }
+    }
+}
 </script>
 
 </body>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Front page -->
+<!-- Consent form -->
 <meta charset="utf-8">
 <link type="text/css" href="./css/bootstrap.min.css" rel="stylesheet">
 
@@ -95,9 +95,9 @@ function loadJSON(path,callback) {
  }
  loadJSON('exp_input.json', function(data){
     var parsed_data = JSON.parse(data);
-    console.log(parsed_data["frontpage"]);
+    console.log(parsed_data["consentform"]);
     //var wrapper= document.createElement('div');
-    document.querySelector("#smth").innerHTML = parsed_data["frontpage"];
+    document.querySelector("#smth").innerHTML = parsed_data["consentform"];
     //var div= wrapper.firstChild;
 });
 
@@ -106,12 +106,7 @@ function loadJSON(path,callback) {
   <div class="container" >
 
       <div class="col-md-3"></div>
-      <div class="col-md-6">
-        <div id="smth" style="min-height: 75%;min-height: 75vh;"></div>
-        <div>
-          <button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href='consent-form.html';"><b>Start</b></button>
-        </div>
-      </div>
+      <div class="col-md-6" id="smth"> </div>
       <div class="col-md-3"></div>
     </div>
 

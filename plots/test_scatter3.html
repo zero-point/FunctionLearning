@@ -69,7 +69,7 @@ fill: steelblue;
     </div>
     <div style="display:none" id="nextScenarioButton"><center>
 
-      <button type="button" class="btn btn-primary btn-lg" onclick="location.href='test_scatter2.html';"><b>Next</b></button>
+      <button type="button" class="btn btn-primary btn-lg" onclick="location.href='survey.html';"><b>Next</b></button>
 
     </center></div>
 
@@ -121,13 +121,23 @@ fill: steelblue;
     }
     function periodic(){
       var trainX = Array.apply(null, {length: 60}).map(Number.call, Number); //periodic
-      trainX = trainX.map(function(x) { return x*5;});
+      trainX = trainX.map(function(x) { return (x+10)*5;});
       var trainY = trainX.map(function(x)  {return Math.sin(x* (Math.PI / 180))+1;});
+
+      var data = trainX.map(function(v,i) {return [v, trainY[i]];});
+      x = d3.scale.linear()
+                .domain([40, d3.max(data, function(d) { return d[0]; })*2])
+                .range([ 0, 350 ]);
+      var y_max = d3.max(data, function(d) { return d[1]; })
+      y = d3.scale.linear()
+              .domain([-y_max*0.05, y_max*2])
+              .range([ 440, 10 ]);
+
       return [trainX,trainY]
     }
-    var xy = linear();
+    //var xy = linear();
     //var xy = quadratic();
-    //var xy = periodic();
+    var xy = periodic();
     var trainX = xy[0];
     var trainY = xy[1];
     var data = trainX.map(function(v,i) {return [v, trainY[i]];});
@@ -135,7 +145,6 @@ fill: steelblue;
     var updateData = function (yTest) {
 
     // SVG BOX
-
     var chart = d3.select('.content')
   	.append('svg')
   	.attr('width', width)
@@ -144,7 +153,7 @@ fill: steelblue;
     .append('g');
 
     if(yTest!=undefined){
-      trainX.push(trainX.length+trainX[0]);
+      trainX.push(trainX[trainX.length-1]+5);
       trainY.push(y.invert(yTest));
       data = trainX.map(function(v,i) {return [v, trainY[i]];});
 /*      trainX2 = trainX.map(function(a) { return x(a); });
@@ -171,8 +180,9 @@ fill: steelblue;
           .attr("r", circle_size);
 
     // RED LINE
-    var testX = x(data.length+1);
-    console.log(testX);
+    var testX = x(trainX[trainX.length-1]+5);
+    console.log(trainX);
+    console.log(x(trainX[trainX.length-1]));
     var red_line = chart.append("svg:line")
       .attr("id", "redLine")
       .attr("x1", testX)  //<<== change your code here
