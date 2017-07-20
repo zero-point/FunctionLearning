@@ -48,28 +48,10 @@
 
     // EQUATIONS
 
-    function linear(){
+    function quadratic(){
       var positions = Array.apply(null, {length: 30}).map(Number.call, Number);
       var trainX = positions.map(function(x) { return x+1; });
-      var trainY = positions.map(function(x) { return -x+25; });
-//      var count = 10;
-//      var trainY = trainX.map(function(x) { count+=1;return x+count*100; });  //linear
-      console.log(trainX,trainY);
-      var data = trainX.map(function(v,i) {return [v, trainY[i]];});
-      x = d3.scale.linear()
-                .domain([0, d3.max(data, function(d) { return d[0]; })*2])
-                .range([ 0, 350 ]);
-      var y_max = d3.max(data, function(d) { return d[1]; })
-      y = d3.scale.linear()
-              .domain([-y_max*6, y_max*1.5])
-              .range([ 490, 10 ]);
-
-      return [trainX,trainY]
-    }
-    function quadratic(){
-      var trainX = Array.apply(null, {length: 30}).map(Number.call, Number);
-      var trainX = trainX.map(function(x) { return x+1; });
-      var trainY = trainX.map(function(x) { return x * x ; });  //quadratic
+      var trainY = positions.map(function(x) { return x*x ; });  //quadratic
       var data = trainX.map(function(v,i) {return [v, trainY[i]];});
       x = d3.scale.linear()
                 .domain([0, d3.max(data, function(d) { return d[0]; })*2])
@@ -81,13 +63,7 @@
 
       return [trainX,trainY]
     }
-    function periodic(){
-      var trainX = Array.apply(null, {length: 60}).map(Number.call, Number); //periodic
-      trainX = trainX.map(function(x) { return x*5;});
-      var trainY = trainX.map(function(x)  {return Math.sin(x* (Math.PI / 180))+1;});
-      return [trainX,trainY]
-    }
-    var xy = linear();
+    var xy = quadratic();
     //var xy = quadratic();
     //var xy = periodic();
     var trainX = xy[0];
@@ -233,6 +209,8 @@
     if (d3.event.defaultPrevented) return; // dragged
     d3.select(this).on('mousedown.drag', null);
     var coordinates = d3.mouse(d3.select('.content').node());
+    console.log(coordinates);
+
     if (last_sel_circle != undefined){
       last_sel_circle.remove();
     }

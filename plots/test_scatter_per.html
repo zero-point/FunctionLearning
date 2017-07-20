@@ -48,48 +48,23 @@
 
     // EQUATIONS
 
-    function linear(){
-      var positions = Array.apply(null, {length: 30}).map(Number.call, Number);
-      var trainX = positions.map(function(x) { return x+1; });
-      var trainY = positions.map(function(x) { return -x+25; });
-//      var count = 10;
-//      var trainY = trainX.map(function(x) { count+=1;return x+count*100; });  //linear
-      console.log(trainX,trainY);
-      var data = trainX.map(function(v,i) {return [v, trainY[i]];});
-      x = d3.scale.linear()
-                .domain([0, d3.max(data, function(d) { return d[0]; })*2])
-                .range([ 0, 350 ]);
-      var y_max = d3.max(data, function(d) { return d[1]; })
-      y = d3.scale.linear()
-              .domain([-y_max*6, y_max*1.5])
-              .range([ 490, 10 ]);
+    function periodic(){
+      var trainX = Array.apply(null, {length: 60}).map(Number.call, Number); //periodic
+      trainX = trainX.map(function(x) { return (x+10)*5;});
+      var trainY = trainX.map(function(x)  {return Math.sin(x*(Math.PI / 180))+1;});
 
-      return [trainX,trainY]
-    }
-    function quadratic(){
-      var trainX = Array.apply(null, {length: 30}).map(Number.call, Number);
-      var trainX = trainX.map(function(x) { return x+1; });
-      var trainY = trainX.map(function(x) { return x * x ; });  //quadratic
       var data = trainX.map(function(v,i) {return [v, trainY[i]];});
       x = d3.scale.linear()
-                .domain([0, d3.max(data, function(d) { return d[0]; })*2])
+                .domain([40, d3.max(data, function(d) { return d[0]; })*2])
                 .range([ 0, 350 ]);
       var y_max = d3.max(data, function(d) { return d[1]; })
       y = d3.scale.linear()
-              .domain([-y_max*0.05, y_max*4])
+              .domain([-y_max*0.05, y_max*2])
               .range([ 440, 10 ]);
 
       return [trainX,trainY]
     }
-    function periodic(){
-      var trainX = Array.apply(null, {length: 60}).map(Number.call, Number); //periodic
-      trainX = trainX.map(function(x) { return x*5;});
-      var trainY = trainX.map(function(x)  {return Math.sin(x* (Math.PI / 180))+1;});
-      return [trainX,trainY]
-    }
-    var xy = linear();
-    //var xy = quadratic();
-    //var xy = periodic();
+    var xy = periodic();
     var trainX = xy[0];
     var trainY = xy[1];
     var data = trainX.map(function(v,i) {return [v, trainY[i]];});
@@ -113,7 +88,7 @@
     }
 
     if(yTest!=undefined){
-      trainX.push(trainX.length+trainX[0]);
+      trainX.push(trainX[trainX.length-1]+5);
       trainY.push(y.invert(yTest));
       data = trainX.map(function(v,i) {return [v, trainY[i]];});
 /*      trainX2 = trainX.map(function(a) { return x(a); });
@@ -140,7 +115,7 @@
           .attr("r", circle_size);
 
     // RED LINE
-    var testX = x(data.length+1);
+    var testX = x(trainX[trainX.length-1]+5);
     console.log(testX);
     var red_line = chart.append("svg:line")
       .attr("id", "redLine")
@@ -154,7 +129,7 @@
     var buffer = chart.append("svg:rect")
       .attr('x', testX-40)
       .attr('y', 0)
-      .style('stroke', '#add8e6')
+      .style('stroke', 'transparent')
       .style('fill', 'transparent')
       .attr('width', 80)
       .attr('height', 450)

@@ -2,76 +2,12 @@
 <!-- Simble draggable bar chart with 2 bins -->
 <meta charset="utf-8">
 <link type="text/css" href="./css/bootstrap.min.css" rel="stylesheet">
-
-<style>
-body {
-    font-family: "MuseoSans-300";
-    font-size: 18px;
-    text-rendering: optimizeLegibility;
-     -webkit-font-smoothing: antialiased;
-}
-
-.jumbotron{
-  padding-top:15px;
-  padding-bottom:0;
-  margin-bottom:0;
-  min-height: 100%;
-  min-height: 100vh;
-}
-
-.container {
-    display: -webkit-flexbox;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-flex-align: center;
-    -ms-flex-align: center;
-    -webkit-align-items: center;
-    align-items: center;
-    justify-content: center;
-}
-
-.selection {
-  fill: steelblue;
-  fill-opacity: 1;
-
-}
-
-svg {
- border-radius:6px;
- display: block;
- margin : auto;
- display: inline-block;
-}
-
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #C8D5DA;
-
-}
-
-.axis .tick line {
-  display: none;
-}
-.axis text {
-  display: none;
-}
-
-.xaxis {
-  stroke: black;
-  stroke-width: 1px;
-}
-
-.data {
-  fill: #30394F;
-}
-</style>
+<link type="text/css" href="./final_style.css" rel="stylesheet">
 <body>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <div class="jumbotron">
 
-  <div class="container">
+  <div class="instructions">
 
   <p><b id="judgementCount">Judgment 1 out of 40</b><br/>
     Click on the rectangle on the right to select the predicted value, <br/>based on the value of the bar on the left.
@@ -121,6 +57,7 @@ var dataX = positions.map(function(x) { return x+1; });
 var dataY = positions.map(function(x) { return 2*x+1; });
 console.log(dataX);
 console.log(dataY);
+
 //  var count = 10;
 //  var dataY = trainX.map(function(x) { count+=1;return x+count*100; });  //linear
 
@@ -211,6 +148,8 @@ else {
 function mousemoved(d){
   coord = d3.mouse(this);
 };
+
+//var close = false;
 function clicked(d){
   if (d3.event.defaultPrevented) return; // dragged
 //  d3.select(this).on('mousedown.drag', null);
@@ -224,7 +163,7 @@ function clicked(d){
 
     document.onkeyup = function(e) {
       var key = e.keyCode || e.which;
-      if (key === 32 && selection_made) {
+      if (key === 32 && selection_made ) {
         console.log("user hit space");
         submittedPoints.push(newHeight);
         d3.select("svg").remove();
@@ -263,6 +202,7 @@ function redRect(){
 }
 function blueRect(){
   svgY.append("rect")
+
     .attr('x', 2)
     .attr('y', scaleY(data2[0].value))
     .style('stroke', 'steelblue')
@@ -273,7 +213,7 @@ function blueRect(){
 
 if (train === true) {
   console.log(Math.abs(scaleY(dataY[judgementCount])-scaleY(data2[0].value)));
-//  console.log(dataY[judgementCount]);
+  //console.log(dataY[judgementCount]);
   if (scaleY(dataY[judgementCount])<scaleY(data2[0].value)) {
     redRect();
     blueRect();
@@ -282,8 +222,11 @@ if (train === true) {
     blueRect();
     redRect();
   }
-  if (Math.abs(scaleY(dataY[judgementCount])-scaleY(data2[0].value))<30) {
+  if (Math.abs(scaleY(dataY[judgementCount])-scaleY(data2[0].value))<50) {
     svgY.on("click", function(d){});
+  }
+  else {
+
   }
 }
 else {
