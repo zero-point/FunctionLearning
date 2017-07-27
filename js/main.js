@@ -754,7 +754,7 @@ var currentMode = "start";
 const totalJudgements = 40; // experiment size
 const margins = 5;          // margins of the container
 const accErrorMargin = 1/5; // acceptable error margin
-const debugmode = true;     // change this for debugging
+const debugmode = false;     // change this for debugging
 
 var expConditions = [];
 var expCondition;
