@@ -812,7 +812,7 @@ var totalNoOfConditions = 3;
 var currentCondition = 0;
 var currentMode = "start";
 const totalJudgements = 40; // experiment size
-const margins = 3;          // margins of the container
+const margins = 2;          // margins of the container
 const accErrorMargin = 1/5; // acceptable error margin
 const debugmode = true;     // change this for debugging
 
