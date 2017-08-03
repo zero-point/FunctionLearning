@@ -72,7 +72,7 @@ function barPlot(xyValues, currentMode, expCondition){
   document.querySelector(".container").appendChild(vert);
 
   if(debugmode){
-    judgementCount = 0;
+    judgementCount = 34;
     document.getElementById('judgementCount').innerHTML = "Judgment "+(judgementCount+1)+" out of 40";
     document.querySelector(".nextScenarioButton").style="display:inline";
   }
@@ -310,7 +310,6 @@ function scatterFullMemPlot(xyValues){
     .style('stroke', '#5b9baf')
     .style('fill', 'transparent')
 
-  console.log(xyValues);
   var scaleX,
       scaleY;
   // if (currentMode.includes("train")) {
@@ -671,7 +670,72 @@ function scatterNoMemPlot(xyValues){
 }
 
 function submitPoints(submittedPoints){
-  return submittedPoints;
+
+    var dataChunk = {
+      'experimentId': 'test',
+      'sessionId': 'test',
+      'expData': submittedPoints
+    }
+    console.log(dataChunk);
+
+  // SYNC (WEBSOCKETS)
+  try {  //
+    var chunk = ChunkWs.prototype.constructor("ws://somata.inf.ed.ac.uk/chunks/ws",function(){
+      chunk.sendChunk(dataChunk);
+    });
+
+    console.log("Data delivery successful");
+  } catch (e) {
+    throw new Error('Sending data to server was unsuccessful');
+  }
+
+  // ASYNC (AJAX)
+  // try {
+  //   $.ajax({
+  //       url: 'http://somata.inf.ed.ac.uk/chunks/save',
+  //       type: 'POST',
+  //       dataType: 'json',
+  //       data: dataChunk,
+  //       cache: false,
+  //       success: function(resultData) {console.log("success, result:" + resultData);},
+  //       error: function(failData) {console.log("error: " + JSON.stringify(failData));}
+  //   });
+  // } catch (e) {
+  //     throw new Error('Sending data to server was unsuccessful');
+  // }
+
+  return;
+}
+
+function ChunkWs (theChunkUrl,messageCallback) {
+    this.chunkUrl = theChunkUrl;
+    this.wso = new WebSocket(this.chunkUrl);
+    this.wsError = 0;
+    this.doneState = 0;
+    var self = this; // Can't use 'this' to refer to object inside functions
+    this.wso.onmessage = function(event) {
+        message = JSON.parse(event.data);
+        console.log('received websocket message: ' + message);
+        console.log('this: ' + JSON.stringify(self));
+        messageCallback(self.doneState,self.wsError,message);
+    }
+
+    this.wso.onerror = function(error){
+            	    console.log('websocket error detected: ' + JSON.stringify(error));
+            	    self.wsError = 1;
+    }
+
+    this.sendChunk = function(dataChunk) {
+            if(dataChunk['experimentId'] == null) console.error("Requires defined experimentId")
+            if(dataChunk['sessionId'] == null) console.error("Requires defined sessionId")
+    	    var dataStr = JSON.stringify(dataChunk);
+    	    self.wso.send(dataStr);
+    	    self.doneState = 1;
+    }
+}
+
+ChunkWs.prototype = {
+    constructor: ChunkWs
 }
 
 function checkStatus(){
