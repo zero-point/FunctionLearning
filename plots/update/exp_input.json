@@ -9,38 +9,22 @@
 
 	"old_consentform": "<br><br/><h3>Consent Form<center></h3><br/><div><p> This experiment does not collect any personally identifying or sensitive information, and you are free to withdraw at any time.  If you have any comments or questions, do not hesitate to contact Irina Preda (s1143039@ed.ac.uk).<p> In the following screens, you will be presented with different representations of data. <p> Based on your understanding of each relationship, you will predict the values of new points. <p> It should only take a few seconds to make each judgment, and there are 3 relationships requiring approximately 40 judgments each. </div> <hr> <p> To participate, click: <a onclick=\"startExperiment();return false;\" href =\"javascript:startExperiment();return false;\" > I agree to participate in this study. </a> </p> <p> If you do not wish to participate, please close this window. </p>",
 
-	"consentform": "<h2>Function Learning Experiment<center></h2><br/> Thank you for choosing to participate in our research.<br/><br/> The goal of this study is to understand how people extrapolate patterns from data, more specifically, data presented through scatter plots and bar charts. <br/><br/> In the following screens, you will be presented with different representations of data. Based on your understanding of each relationship, you will predict the values of new points. Please follow the instructions closely and complete all the required steps.<br/><br/> The runtime of the experiments is approximately 20 minutes and there is a survey at the end. <br/><br/> This experiment does not collect any personally identifying or sensitive information, and you are free to withdraw at any time.<br/><br/> If you have any comments or questions, do not hesitate to contact Irina Preda (s1143039@ed.ac.uk).<hr> To participate, click: <a onclick=\"startExperiment();return false;\" href =\"javascript:startExperiment();return false;\" > I agree to participate in this study. </a><br/><br/> If you do not wish to participate, please close this window.",
-
-	"intro-info":{
-		"train-bar":"<p>The following experiment uses bar plots <br/>and requires you to match the height of the rectangle <br/>on the right according to the width of the rectangle on the left. <br/><br/>This is only the training phase <br/>and you will receive feedback.</p>",
-		"train-scatter-nomem":"<p>The following experiment uses a scatter plot <br/>and requires you to select the value of the Y axis <br/>of each point so that it matches the X axis. <br/><br/>This is only the training phase <br/>and you will receive feedback.</p>",
-		"train-scatter-fullmem":"<p>The following experiment uses a scatter plot <br/>and requires you to select the value of the Y axis <br/>of each point so that it matches the X axis. <br/><br/>This is only the training phase <br/>and you will receive feedback.</p>",
-		"test-bar":"<p>This is now the testing phase. <br/><br/>Your choices will be recorded.</p>",
-		"test-scatter-nomem":"<p>This is now the testing phase. <br/><br/>Your choices will be recorded.</p>",
-		"test-scatter-fullmem":"<p>This is now the testing phase. <br/><br/>Your choices will be recorded.</p>"
-
-	},
-
-	"survey": {
-		"0":"I found the website easy to use.",
-		"1":"The instructions were clear and understandable.",
-		"2":"I felt able to fulfill the instructions using the website.",
-		"3":"The website made me feel lost and confused."
-	},
+	"consentform": "
+		<h2>Function Learning Experiment<center></h2><br/>Thank you for choosing to participate in our research.<br/><br/> The goal of this study is to understand how people extrapolate patterns from data, more specifically, data presented through scatter plots and bar charts.  <br/><br/> In the following screens, you will be presented with different representations of data. Based on your understanding of each relationship, you will predict the values of new points. Please follow the instructions closely and complete all the required steps.<br/><br/> The runtime of the experiments is approximately 20 minutes and there is a survey at the end. <br/><br/> This experiment does not collect any personally identifying or sensitive information, and you are free to withdraw at any time.<br/><br/> If you have any comments or questions, do not hesitate to contact Irina Preda (s1143039@ed.ac.uk). <hr> To participate, click: <a onclick=\"startExperiment();return false;\" href =\"javascript:startExperiment();return false;\" > I agree to participate in this study. </a><br/><br/> If you do not wish to participate, please close this window.",
 
 	"instructions": {
 		"train-bar":"<br/>Click on the rectangle on the right to select the predicted value, based on the value of the bar on the left.<br/><br/> Hit the 'Space' key to check if your choice is correct.<br/><br/> Hit the 'Enter' key to submit your final choice and move to the next one.</p>",
 		"test-bar":"<br/>Click on the rectangle on the right to select the predicted value, based on the value of the bar on the left.<br/><br/> Hit the 'Enter' key to submit your choice and move to the next one.</p>",
 		"old_bar": "<p>Please predict the new value of the bar on the right, based on the value of the bar on the left.<br/>Hit the 'Space' key to submit each choice.</p>",
-		"old_scatter": "<p>Please predict the location of the point on the Y axis based on its position in the X axis. <br/>Hit the 'Space' key to submit each choice.</p>",
+		"old_scatter": "<p>Please predict the new points, based on the points that you can see. <br/>Hit the 'Space' key to submit each choice.</p>",
 		"train-scatter-nomem":"<br/>Please predict try to predict the points, as best as you can. <br/><br/>Hit the 'Space' key to check if your choice is correct. <br/><br/>Hit the 'Enter' key to submit your final choice and move to the next one.",
-		"train-scatter-fullmem":"<br/>Please predict the location of the point on the Y axis based on its position in the X axis. <br/><br/>Hit the 'Space' key to check if your choice is correct. <br/><br/>Hit the 'Enter' key to submit your final choice and move to the next one.",
+		"train-scatter-fullmem":"<br/>Please predict the new points, based on the points that you see. <br/><br/>Hit the 'Space' key to check if your choice is correct. <br/><br/>Hit the 'Enter' key to submit your final choice and move to the next one.",
 		"test-scatter-nomem":"<br/>Please try to predict the points, as best as you can. <br/><br/>Hit the 'Enter' key to submit your choice and move to the next one.",
 		"test-scatter-fullmem":"<br/>Please predict the new points, based on the points that you see. <br/><br/>Hit the 'Enter' key to submit your choice and move to the next one."
 	},
 
 
-	"conclusion": "Thank you for your participation in this study. <br/><br/>Please complete the following short survey regarding your experience using this website. <br/><br/> Once you click 'Submit', the experiment ends. If you have any comments or questions, please contact Irina Preda (s1143039@ed.ac.uk)",
+	"conclusion": "Thank you for your participation in this study. <br/><br/>Please complete the following short survey regarding your experience using this website. <br/><br/>If you have any comments or questions, please contact Irina Preda (s1143039@ed.ac.uk)",
 
 	"conditions": {
 		"1": {

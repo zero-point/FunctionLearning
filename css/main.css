@@ -148,7 +148,7 @@ form .statement {
 form .likert {
   list-style:none;
   width:100%;
-  margin:0;
+  margin:-8px;
   padding:0 0 35px;
   display:block;
   border-bottom:2px solid #efefef;
@@ -178,7 +178,15 @@ form .likert li input[type=radio] {
   margin-left:-6px;
 
 }
-form .likert li label {width:100%;}
+
+label {
+  font-size: 14px;
+}
+
+form .likert li label {
+  width:100%;
+}
+
 form .buttons {
   margin:30px 0;
   padding:0 4.25%;
@@ -191,6 +199,6 @@ form .buttons button {
   border-radius: 3px;
 }
 form .buttons .clear {background-color: #e9e9e9;}
-form .buttons .submit {background-color: #67ab49;}
-form .buttons .clear:hover {background-color: #ccc;}
-form .buttons .submit:hover {background-color: #14892c;}
+form .buttons .submit {background-color: #c1c1c1;}
+form .buttons .clear:hover {background-color: #7f7f7f;}
+form .buttons .submit:hover {background-color: #7f7f7f;}

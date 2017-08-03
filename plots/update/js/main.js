@@ -21,7 +21,7 @@ function randomCondition(){
   var presentationTypes = ["bar","scatter-nomem","scatter-fullmem"];
   var functionTypes = ["linear","quadratic","periodic"];
   return [presentationTypes[Math.floor(Math.random()*presentationTypes.length)],functionTypes[Math.floor(Math.random()*functionTypes.length)]];
-  //return [presentationTypes[2],functionTypes[2]];
+  //return [presentationTypes[2],functionTypes[0]];
 }
 
 function closeMsg() {
@@ -38,7 +38,7 @@ function openMsg(closeGuess, judgementCount, currentMode){
         document.querySelector(".overlay-content").appendChild(text);
     }
     else {
-      text.innerHTML = "Not quite, update your choice to match the red feedback dot";
+      text.innerHTML = "Not quite, try again";
       document.querySelector(".overlay-content").appendChild(text);
     }
   }
@@ -47,10 +47,6 @@ function openMsg(closeGuess, judgementCount, currentMode){
     document.querySelector(".overlay-content").appendChild(text);
   }
   document.querySelector("#myNav").style.width = "100%";
-  var mTimer = setTimeout(function() {
-    document.querySelector("#myNav").style.width = "0%";
-    document.querySelector(".overlay-content").innerHTML = "";
-  },1000);
 }
 
 function displayInstructions(condition){
@@ -101,37 +97,21 @@ function barPlot(xyValues, currentMode, expCondition){
       blueHeightY = 500,
       scaleX,
       scaleY;
-  // if (currentMode.includes("train")) {
-  //   scaleX = d3.scaleLinear()
-  //     .domain([Math.min.apply(null, xyValues[0]), Math.max.apply(null, xyValues[0])])
-  //     .range([0, blueWidthX/2]);
-  //   scaleY = d3.scaleLinear()
-  //     .domain([Math.min.apply(null, xyValues[1]), Math.max.apply(null, xyValues[1])])
-  //     .range([0, blueHeightY/2]);
-  // }
-  // else {
-  //   scaleX = d3.scaleLinear()
-  //     .domain([Math.min.apply(null, xyValues[0]), Math.max.apply(null, xyValues[0])])
-  //     .range([blueWidthX/2, blueWidthX]);
-  //   scaleY = d3.scaleLinear()
-  //     .domain([Math.min.apply(null, xyValues[1]), Math.max.apply(null, xyValues[1])])
-  //     .range([blueHeightY/2, blueHeightY]);
-  // }
-
-  xValue = xyValues[0];
-  yValue = xyValues[1];
-  scaleX = d3.scaleLinear()
-    .domain([Math.min.apply(null, yValue), Math.max.apply(null, yValue)])
-    .range([0, blueWidthX]);
-  scaleY = d3.scaleLinear()
-    .domain([Math.min.apply(null, yValue), Math.max.apply(null, yValue)])
-    .range([0, blueHeightY]);
-
   if (currentMode.includes("train")) {
-     xyValues = [xValue.slice(0,40),yValue.slice(0,40)];
+    scaleX = d3.scaleLinear()
+      .domain([Math.min.apply(null, xyValues[0]), Math.max.apply(null, xyValues[0])])
+      .range([0, blueWidthX/2]);
+    scaleY = d3.scaleLinear()
+      .domain([Math.min.apply(null, xyValues[1]), Math.max.apply(null, xyValues[1])])
+      .range([0, blueHeightY/2]);
   }
   else {
-     xyValues = [xValue.slice(40,80),yValue.slice(40,80)];
+    scaleX = d3.scaleLinear()
+      .domain([Math.min.apply(null, xyValues[0]), Math.max.apply(null, xyValues[0])])
+      .range([blueWidthX/2, blueWidthX]);
+    scaleY = d3.scaleLinear()
+      .domain([Math.min.apply(null, xyValues[1]), Math.max.apply(null, xyValues[1])])
+      .range([blueHeightY/2, blueHeightY]);
   }
 
   var svgX = d3.select(horiz)
@@ -179,7 +159,6 @@ function barPlot(xyValues, currentMode, expCondition){
         .style('fill', 'red');
     }
   }
-  openDescr(currentMode+"-"+expCondition[0]);
   function clicked(d){
 
     if (d3.event.defaultPrevented) return; // dragged
@@ -310,41 +289,27 @@ function scatterFullMemPlot(xyValues){
     .style('stroke', '#5b9baf')
     .style('fill', 'transparent')
 
-  console.log(xyValues);
   var scaleX,
       scaleY;
-  // if (currentMode.includes("train")) {
-  //   scaleX = d3.scaleLinear()
-  //     .domain([Math.min.apply(null, xyValues[0]), Math.max.apply(null, xyValues[0])])
-  //     .range([0, width/3]);
-  //   scaleY = d3.scaleLinear()
-  //     .domain([Math.min.apply(null, xyValues[1]), Math.max.apply(null, xyValues[1])])
-  //     .range([height, height-height/3]);
-  // }
-  // else {
-  //   scaleX = d3.scaleLinear()
-  //     .domain([Math.min.apply(null, xyValues[0]), Math.max.apply(null, xyValues[0])])
-  //     .range([width/3, width*2/3]);
-  //   scaleY = d3.scaleLinear()
-  //     .domain([Math.max.apply(null, xyValues[1]),Math.min.apply(null, xyValues[1])])
-  //     .range([height/3, height*2/3]);
-  // }
-
-  xValue = xyValues[0];
-  yValue = xyValues[1];
-  scaleX = d3.scaleLinear()
-    .domain([Math.min.apply(null, xValue), Math.max.apply(null, xValue)])
-    .range([0, width*2/3]);
-  scaleY = d3.scaleLinear()
-    .domain([Math.min.apply(null, yValue), Math.max.apply(null, yValue)])
-    .range([height, height/3]);
 
   if (currentMode.includes("train")) {
-     xyValues = [xValue.slice(0,40),yValue.slice(0,40)];
+    scaleX = d3.scaleLinear()
+      .domain([Math.min.apply(null, xyValues[0]), Math.max.apply(null, xyValues[0])])
+      .range([0, width/3]);
+    scaleY = d3.scaleLinear()
+      .domain([Math.min.apply(null, xyValues[1]), Math.max.apply(null, xyValues[1])])
+      .range([height, height-height/3]);
   }
   else {
-     xyValues = [xValue.slice(40,80),yValue.slice(40,80)];
+    scaleX = d3.scaleLinear()
+      .domain([Math.min.apply(null, xyValues[0]), Math.max.apply(null, xyValues[0])])
+      .range([width/3, width*2/3]);
+    scaleY = d3.scaleLinear()
+      .domain([Math.max.apply(null, xyValues[1]),Math.min.apply(null, xyValues[1])])
+      .range([height/3, height*2/3]);
   }
+  console.log("True values: ");
+  console.log(xyValues);
 
   var currloc = margin.left + scaleX(xyValues[0][judgementCount]);
   for (var i = 0; i < xyValues[1].length; i++) {
@@ -389,8 +354,9 @@ function scatterFullMemPlot(xyValues){
     chart.selectAll("rect").style('stroke', 'transparent');
     chart.selectAll("#true").style('stroke', 'transparent');
   }
-  openDescr(currentMode+"-"+expCondition[0]);
+
   var last_sel_circle;
+
   function clicked(d, i) {
     if (d3.event.defaultPrevented) return; // dragged
     d3.select(this).on('mousedown.drag', null);
@@ -516,38 +482,24 @@ function scatterNoMemPlot(xyValues){
 
   var scaleX,
       scaleY;
-  // if (currentMode.includes("train")) {
-  //   scaleX = d3.scaleLinear()
-  //     .domain([Math.min.apply(null, xyValues[0]), Math.max.apply(null, xyValues[0])])
-  //     .range([0, width/3]);
-  //   scaleY = d3.scaleLinear()
-  //     .domain([Math.min.apply(null, xyValues[1]), Math.max.apply(null, xyValues[1])])
-  //     .range([height, height-height/3]);
-  // }
-  // else {
-  //   scaleX = d3.scaleLinear()
-  //     .domain([Math.min.apply(null, xyValues[0]), Math.max.apply(null, xyValues[0])])
-  //     .range([width/3, width*2/3]);
-  //   scaleY = d3.scaleLinear()
-  //     .domain([Math.min.apply(null, xyValues[1]), Math.max.apply(null, xyValues[1])])
-  //     .range([height/3, height*2/3]);
-  // }
-
-  xValue = xyValues[0];
-  yValue = xyValues[1];
-  scaleX = d3.scaleLinear()
-    .domain([Math.min.apply(null, xValue), Math.max.apply(null, xValue)])
-    .range([0, width*2/3]);
-  scaleY = d3.scaleLinear()
-    .domain([Math.min.apply(null, yValue), Math.max.apply(null, yValue)])
-    .range([height, height/3]);
 
   if (currentMode.includes("train")) {
-     xyValues = [xValue.slice(0,40),yValue.slice(0,40)];
+    scaleX = d3.scaleLinear()
+      .domain([Math.min.apply(null, xyValues[0]), Math.max.apply(null, xyValues[0])])
+      .range([0, width/3]);
+    scaleY = d3.scaleLinear()
+      .domain([Math.min.apply(null, xyValues[1]), Math.max.apply(null, xyValues[1])])
+      .range([height, height-height/3]);
   }
   else {
-     xyValues = [xValue.slice(40,80),yValue.slice(40,80)];
+    scaleX = d3.scaleLinear()
+      .domain([Math.min.apply(null, xyValues[0]), Math.max.apply(null, xyValues[0])])
+      .range([width/3, width*2/3]);
+    scaleY = d3.scaleLinear()
+      .domain([Math.min.apply(null, xyValues[1]), Math.max.apply(null, xyValues[1])])
+      .range([height/3, height*2/3]);
   }
+  console.log(xyValues);
 
   var currloc = margin.left + scaleX(xyValues[0][judgementCount]);
   for (var i = 0; i < xyValues[1].length; i++) {
@@ -592,8 +544,9 @@ function scatterNoMemPlot(xyValues){
     chart.selectAll("rect").style('stroke', 'transparent');
     chart.selectAll("#true").style('stroke', 'transparent');
   }
-  openDescr(currentMode+"-"+expCondition[0]);
+
   var last_sel_circle;
+
   function clicked(d, i) {
     if (d3.event.defaultPrevented) return; // dragged
     d3.select(this).on('mousedown.drag', null);
@@ -684,7 +637,7 @@ function checkStatus(){
       document.querySelector(".container").innerHTML = "";
       document.querySelector(".nextScenarioButton").style="display:none";
       document.querySelector("#mode").innerHTML = "Testing mode";
-      presentationDict[expCondition[0]](xyValues,currentMode,expCondition);
+      presentationDict[expCondition[0]]([xyValues[0].slice(40,80),xyValues[1].slice(40,80)],currentMode,expCondition);
       //presentationDict[expCondition[0]](xyValues,mode);
   }
   else {
@@ -714,9 +667,8 @@ function checkStatus(){
       /* CONSTRUCTING FUNCTION'S X AND Y ARRAYS*/
       var positions = Array.apply(null, {length: 80}).map(Number.call, Number);
       var xValue = positions.map(function(x) { return x+1; });
-      var yValue = xValue.map(function(x) {return functionDict[expCondition[1]](x);});
+      var yValue = xValue.map(function(x) { return functionDict[expCondition[1]](x); });
       xyValues = [xValue,yValue];
-      console.log(xyValues);
 
       /* DISPLAYING INSTRUCTIONS */
       currentMode = "train";
@@ -724,28 +676,13 @@ function checkStatus(){
       document.querySelector(".container").innerHTML = "";
       document.querySelector(".nextScenarioButton").style="display:none";
       document.querySelector("#mode").innerHTML = "Training mode";
-      presentationDict[expCondition[0]](xyValues,currentMode,expCondition);
+      presentationDict[expCondition[0]]([xValue.slice(0,40),yValue.slice(0,40)],currentMode,expCondition);
       //presentationDict[expCondition[0]](xyValues,mode);
     }
     else {
       thankyou();
     }
   }
-}
-
-function closeDescr() {
-  document.querySelector("#myNav").style.width = "0%";
-  document.querySelector(".overlay-content").innerHTML = "";
-}
-
-function openDescr(condition){
-  var text = document.createElement('a');
-  loadJSON('exp_input.json', function(data){
-    text.innerHTML = JSON.parse(data)["intro-info"][condition];
-  });
-  text.className = "intro-info";
-  document.querySelector(".overlay-content").appendChild(text);
-  document.querySelector("#myNav").style.width = "100%";
 }
 
 function startExperiment(){
@@ -783,45 +720,20 @@ function thankyou(){
   loadJSON('exp_input.json', function(data){
     document.querySelector(".instructionText").innerHTML = JSON.parse(data)["conclusion"];
   });
-  document.querySelector(".nextScenarioButton").remove();
-  survey();
+  document.querySelector(".nextScenarioButton").innerHTML = "Take Survey";
+  document.querySelector(".nextScenarioButton").onclick = function() {
+    survey();
+  }
 }
 
-function survey(){
-  loadJSON('exp_input.json', function(data){
-    var parsed_data = JSON.parse(data);
-    var temp = "";
-    var survey = parsed_data["survey"];
-    var ans = ["Strongly Agree","Agree","Neutral","Disagree","Strongly Disagree"];
-    temp += "<div class=\"wrap\"><form action=\"\">";
-    for (var i=0; i<Object.keys(survey).length; i++) {
-      temp += "<label class=\"statement\">"+ survey[i] +"</label><ul class=\"likert\">";
-      for (var j=0; j<5; j++){
-        temp += "<li><input type=\"radio\" name=\"likert" + i + "\"><label>" + ans[j] + "</label></li>";
-      }
-      temp += "</ul>";
-
-    }
-    temp += "<div class=\"buttons\"><button class=\"clear\">Clear</button><button class=\"submit\">Submit</button></div>";
-    temp += "</form></div>";
-    document.querySelector(".container").innerHTML = temp;
-    document.querySelector(".submit").onclick = function() {
-      document.querySelector(".container").innerHTML = "";
-      document.querySelector("#main").innerHTML = "";
-    };
-    document.querySelector(".clear").onclick = function() {
-      document.querySelector(".container").innerHTML = "";
-      document.querySelector("#main").innerHTML = "";
-    };
-  });
-}
+function survey(){}
 
 /********  MAIN  **********/
 
 var functionDict = {
   "linear": function(x) {return 2*x+1;},
   "quadratic": function(x) {return x*x;},
-  "periodic": function(x) {return Math.sin((x/16+3/2)*Math.PI);},
+  "periodic": function(x) {return Math.sin(x*(Math.PI/180))+1;},
 };
 
 var presentationDict = {
@@ -840,9 +752,10 @@ var totalNoOfConditions = 3;
 var currentCondition = 0;
 var currentMode = "start";
 const totalJudgements = 40; // experiment size
-const margins = 3;          // margins of the container
+const margins = 5;          // margins of the container
 const accErrorMargin = 1/5; // acceptable error margin
 const debugmode = true;     // change this for debugging
+
 var expConditions = [];
 var expCondition;
 
