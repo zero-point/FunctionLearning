@@ -21,7 +21,7 @@ function randomCondition(){
   var presentationTypes = ["bar","scatter-nomem","scatter-fullmem"];
   var functionTypes = ["linear","quadratic","periodic"];
   //return [presentationTypes[Math.floor(Math.random()*presentationTypes.length)],functionTypes[Math.floor(Math.random()*functionTypes.length)]];
-  return [presentationTypes[0],functionTypes[0]];
+  return [presentationTypes[0],functionTypes[2]];
 }
 
 function closeMsg() {
@@ -72,7 +72,7 @@ function barPlot(xyValues, currentMode, expCondition){
   document.querySelector(".container").appendChild(vert);
 
   if(debugmode){
-    judgementCount = 34;
+    judgementCount = 0;
     document.getElementById('judgementCount').innerHTML = "Judgment "+(judgementCount+1)+" out of 40";
     document.querySelector(".nextScenarioButton").style="display:inline";
   }
@@ -122,10 +122,10 @@ function barPlot(xyValues, currentMode, expCondition){
   yValue = xyValues[1];
   scaleX = d3.scaleLinear()
     .domain([Math.min.apply(null, xValue), Math.max.apply(null, xValue)])
-    .range([0, blueWidthX*2/3]);
+    .range([1, blueWidthX*2/3]);
   scaleY = d3.scaleLinear()
     .domain([Math.min.apply(null, yValue), Math.max.apply(null, yValue)])
-    .range([0, blueHeightY*2/3]);
+    .range([1, blueHeightY*2/3]);
 
   if (currentMode.includes("train")) {
      xyValues = [xValue.slice(0,40),yValue.slice(0,40)];
@@ -167,7 +167,7 @@ function barPlot(xyValues, currentMode, expCondition){
       .attr("height", paddedHeightY-yValue);
   }
   function redYRect(){
-    if (currentMode.includes("train")) {
+    if (currentMode.includes("train")||debugmode===true) {
       var feedback = scaleY(xyValues[1][judgementCount]);
       svgY.append("rect")
         .attr('id',"temp_red")
