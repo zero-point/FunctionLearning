@@ -20,8 +20,8 @@ function loadJSON(path,callback) {
 function randomCondition(){
   var presentationTypes = ["bar","scatter-nomem","scatter-fullmem"];
   var functionTypes = ["linear","quadratic","periodic"];
-  return [presentationTypes[Math.floor(Math.random()*presentationTypes.length)],functionTypes[Math.floor(Math.random()*functionTypes.length)]];
-  //return [presentationTypes[2],functionTypes[2]];
+  //return [presentationTypes[Math.floor(Math.random()*presentationTypes.length)],functionTypes[Math.floor(Math.random()*functionTypes.length)]];
+  return [presentationTypes[0],functionTypes[0]];
 }
 
 function closeMsg() {
@@ -50,7 +50,7 @@ function openMsg(closeGuess, judgementCount, currentMode){
   var mTimer = setTimeout(function() {
     document.querySelector("#myNav").style.width = "0%";
     document.querySelector(".overlay-content").innerHTML = "";
-  },1000);
+  },500);
 }
 
 function displayInstructions(condition){
@@ -121,11 +121,11 @@ function barPlot(xyValues, currentMode, expCondition){
   xValue = xyValues[0];
   yValue = xyValues[1];
   scaleX = d3.scaleLinear()
-    .domain([Math.min.apply(null, yValue), Math.max.apply(null, yValue)])
-    .range([0, blueWidthX]);
+    .domain([Math.min.apply(null, xValue), Math.max.apply(null, xValue)])
+    .range([0, blueWidthX*2/3]);
   scaleY = d3.scaleLinear()
     .domain([Math.min.apply(null, yValue), Math.max.apply(null, yValue)])
-    .range([0, blueHeightY]);
+    .range([0, blueHeightY*2/3]);
 
   if (currentMode.includes("train")) {
      xyValues = [xValue.slice(0,40),yValue.slice(0,40)];
