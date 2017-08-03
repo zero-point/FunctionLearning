@@ -20,8 +20,8 @@ function loadJSON(path,callback) {
 function randomCondition(){
   var presentationTypes = ["bar","scatter-nomem","scatter-fullmem"];
   var functionTypes = ["linear","quadratic","periodic"];
-  //return [presentationTypes[Math.floor(Math.random()*presentationTypes.length)],functionTypes[Math.floor(Math.random()*functionTypes.length)]];
-  return [presentationTypes[0],functionTypes[2]];
+  return [presentationTypes[Math.floor(Math.random()*presentationTypes.length)],functionTypes[Math.floor(Math.random()*functionTypes.length)]];
+  //return [presentationTypes[0],functionTypes[2]];
 }
 
 function closeMsg() {
@@ -685,14 +685,10 @@ function checkStatus(){
       document.querySelector(".nextScenarioButton").style="display:none";
       document.querySelector("#mode").innerHTML = "Testing mode";
       presentationDict[expCondition[0]](xyValues,currentMode,expCondition);
-      //presentationDict[expCondition[0]](xyValues,mode);
   }
   else {
     finishedConditions[currentCondition] = true;
     currentCondition += 1;
-    console.log(finishedConditions);
-    console.log(totalNoOfConditions);
-    console.log(currentCondition);
     if(currentCondition <= totalNoOfConditions){
       /* GENERATING RANDOM CONDITION*/
       console.log("-----------------------");
@@ -725,7 +721,6 @@ function checkStatus(){
       document.querySelector(".nextScenarioButton").style="display:none";
       document.querySelector("#mode").innerHTML = "Training mode";
       presentationDict[expCondition[0]](xyValues,currentMode,expCondition);
-      //presentationDict[expCondition[0]](xyValues,mode);
     }
     else {
       thankyou();
