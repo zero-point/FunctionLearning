@@ -38,7 +38,7 @@ function openMsg(closeGuess, judgementCount, currentMode){
         document.querySelector(".overlay-content").appendChild(text);
     }
     else {
-      text.innerHTML = "Not quite, update your choice to match the red feedback dot";
+      text.innerHTML = "Not quite, update your choice to match the feedback in red";
       document.querySelector(".overlay-content").appendChild(text);
     }
   }
