@@ -1,0 +1,11 @@
+{
+  "name": "function-learning",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "harp server --port $PORT"
+  },
+  "dependencies": {
+    "harp": "^0.24.0"
+  }
+}

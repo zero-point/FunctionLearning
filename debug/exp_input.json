@@ -1,0 +1,60 @@
+{
+	"versionid": "3.0",
+	"consentform": "<h2>Function Learning Experiment<center></h2><br/> Thank you for choosing to participate in our research.<br/><br/> The goal of this study is to understand how people extrapolate patterns from data, more specifically, data presented through scatter plots and bar charts. <br/><br/> In the following screen, you will be presented with a certain representation of data. Based on your understanding of each relationship, you will predict the values of new points. Please follow the instructions closely and complete all the required steps.<br/><br/> The runtime of the experiments is approximately 10 minutes and there is a survey at the end. <br/><br/> This experiment does not collect any personally identifying or sensitive information, and you are free to withdraw at any time.<br/><br/> If you have any comments or questions, do not hesitate to contact Irina Preda (s1143039@sms.ed.ac.uk).<hr> To participate, click: <a onclick=\"startExperiment();return false;\" href =\"javascript:startExperiment();return false;\" > I agree to participate in this study. </a><br/><br/> If you do not wish to participate, please close this window.",
+	"frontpage": "",
+	"intro-info": {
+		"train-bar": "<p>The following experiment requires you to<br/> match the height of the blue bar on the right <br/>according to the width of the blue bar on the left. <br/><br/>This is only the training phase <br/>and you will receive feedback.</p>",
+		"train-scatter-nomem": "<p>The following experiment requires you to<br/> select the value of the Y axis of each point<br/> so that it matches the X axis. <br/><br/>This is only the training phase <br/>and you will receive feedback.</p>",
+		"train-scatter-fullmem": "<p>The following experiment requires you to<br/> select the value of the Y axis of each point<br/> so that it matches the X axis. <br/><br/>This is only the training phase <br/>and you will receive feedback.</p>",
+		"test-bar": "<p>This is now the testing phase. <br/><br/>Your choices will be recorded.</p><br/>",
+		"test-scatter-nomem": "<p>This is now the testing phase. <br/><br/>Your choices will be recorded.</p><br/>",
+		"test-scatter-fullmem": "<p>This is now the testing phase. <br/><br/>Your choices will be recorded.</p><br/>"
+	},
+	"survey": {
+		"0": {
+			"type": "likert",
+			"question": "I found the website easy to use.",
+			"answers": {
+				"0": "Strongly Agree",
+				"1": "Agree",
+				"2": "Neutral",
+				"3": "Disagree",
+				"4": "Strongly Disagree"
+			}
+		},
+		"1": {
+			"type": "likert",
+			"question": "The instructions were clear and understandable.",
+			"answers": {
+				"0": "Strongly Agree",
+				"1": "Agree",
+				"2": "Neutral",
+				"3": "Disagree",
+				"4": "Strongly Disagree"
+			}
+		},
+		"2": {
+			"type": "closed",
+			"question": "Please tick the box for any statement that is true:",
+			"answers": {
+				"0": "I followed the general trend/shape of the presented data",
+				"1": "I predicted the points, based on the training",
+				"2": "I could see relationships in the data that were familiar to me",
+				"3": "I guessed the points but did not see a clear trend"
+			}
+		},
+		"3": {
+			"type": "open",
+			"question": "Please write below if you have anything to add about the website or the experiments."
+		}
+	},
+	"instructions": {
+		"train-bar": "<br/>Click on the rectangle on the right to select the predicted value, based on the value of the blue bar on the left. <br/><br/> Hit the 'Space' key to submit your choice. <br/><br/>This is only training, so please update your choice based on the feedback in red.</p>",
+		"train-scatter-nomem": "<br/>Click on the red line to select what you predict the Y (axis) value would be, based on the X (axis) value and any previous points (if displayed). <br/><br/>Hit the 'Space' key to submit your choice. <br/><br/>This is only training, so please update your choice based on the feedback in red.",
+		"train-scatter-fullmem": "<br/>Click on the red line to select what you predict the Y (axis) value would be, based on the X (axis) value and any previous points (if displayed). <br/><br/>Hit the 'Space' key to submit your choice. <br/><br/>This is only training, so please update your choice based on the feedback in red.",
+		"test-bar": "<br/>Click on the rectangle on the right to select the predicted value, based on the value of the blue bar on the left.<br/><br/> Hit the 'Space' key to submit your choice and move on. <br/><br/>This is the testing phase, no feedback will be provided and your choices will be recorded.",
+		"test-scatter-nomem": "<br/>Click on the red line to select what you predict the Y (axis) value would be based on the X (axis) value. <br/><br/>Hit the 'Space' key to submit your choice and move on. <br/><br/>This is the testing phase, no feedback will be provided and your choices will be recorded.",
+		"test-scatter-fullmem": "<br/>Click on the red line to select what you predict the Y (axis) value would be, based on the X (axis) value. <br/><br/>Hit the 'Space' key to submit your choice and move on. <br/><br/>This is the testing phase, no feedback will be provided and your choices will be recorded."
+	},
+	"conclusion": "Thank you for your participation in this study. <br/><br/>Please complete the following short survey regarding your experience using this website. <br/><br/> Once you click 'Submit', the experiment ends. If you have any comments or questions, please contact Irina Preda (s1143039@sms.ed.ac.uk)"
+}
