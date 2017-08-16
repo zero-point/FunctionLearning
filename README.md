@@ -5,11 +5,9 @@ MSc Project concerned with exploring human function learning in different presen
 
 # Status
 
-**Experiment finalised. Application deployed, data collection and analysis finished. 
+**Application deployed, data collection and analysis finished.**
 
-App design v3.0: Reduced the experiment to 1 condition per participant (between-groups design), rather than the previous 3. 
-
-The live website can be found here: [function-learning.herokuapp.com](function-learning.herokuapp.com)**
+The live website can be found here: [function-learning.herokuapp.com](function-learning.herokuapp.com)
 
 
 # Code Description:
