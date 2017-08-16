@@ -1,8 +1,10 @@
-### Documentation
+# Documentation
 
 ## Versions:
-# live version: .\ route
-# debug version: .\debug route
+### live version: .\ route
+### debug version: .\debug route
+
+App design v3.0: Reduced the experiment to 1 condition per participant (between-groups design), rather than the previous 3. 
 
 
 ## Code structure:
