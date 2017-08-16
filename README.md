@@ -13,12 +13,14 @@ The live website can be found here: [function-learning.herokuapp.com](function-l
 # Code Description:
 
 Languages: HTML/Javascript/JS
+
 Libraries: Bootstrap/D3js
 
 
 # Other useful information:
 
 To run locally use .\run.sh (which runs a SimpleHTTPServer in Python) then access localhost:8000\ on your browser
+
 For debug mode check out the \debug route (localhost:8000\debug) *this route uses its own script debug/js/debug.js*
 
 
