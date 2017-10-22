@@ -296,8 +296,9 @@ function barPlot(xyValues, currentMode, expCondition){
               var savedAccInfo = {currentMode: currentMode, judgement: judgementCount+1, x: xyValues[0][judgementCount], scaledX: scaleX(xyValues[0][judgementCount]), trueY:trueValue, predY: target, timestamp: Date.now()};
               tempListOfAccValues.push(savedAccInfo);
               closeGuess = false;
-
-              attemptedSubmissions.push(tempListOfAttValues);
+              if (tempListOfAttValues !== undefined && tempListOfAttValues.length !== 0) {
+                attemptedSubmissions.push(tempListOfAttValues);
+              }
               acceptedSubmissions.push(tempListOfAccValues);
               allSubmissions.push(tempListOfAllValues);
               tempListOfAttValues = [];
@@ -556,7 +557,9 @@ function scatterFullMemPlot(xyValues,currentMode,expCondition){
                 .attr("height", height)
                 .on("click", clicked);
 
-              attemptedSubmissions.push(tempListOfAttValues);
+              if (tempListOfAttValues !== undefined && tempListOfAttValues.length !== 0) {
+                attemptedSubmissions.push(tempListOfAttValues);
+              }
               acceptedSubmissions.push(tempListOfAccValues);
               allSubmissions.push(tempListOfAllValues);
               tempListOfAttValues = [];
@@ -803,7 +806,9 @@ function scatterNoMemPlot(xyValues,currentMode,expCondition){
               submittedPoints.push(target);
               closeGuess = false;
 
-              attemptedSubmissions.push(tempListOfAttValues);
+              if (tempListOfAttValues !== undefined && tempListOfAttValues.length !== 0) {
+                attemptedSubmissions.push(tempListOfAttValues);
+              }
               acceptedSubmissions.push(tempListOfAccValues);
               allSubmissions.push(tempListOfAllValues);
               tempListOfAttValues = [];
