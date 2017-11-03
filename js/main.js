@@ -256,14 +256,14 @@ function barPlot(xyValues, currentMode, expCondition){
       selection_made = true;
       var target = paddedHeightY-coord;
       chosenPoints.push(target);
-      condChosenPoints.push(target);
       var blueRect, redRect;
+      var trueValue = scaleY(xyValues[1][judgementCount]);
       if(spaced === false){
         svgY.select("#temp_blue").remove();
         blueRect = blueYRect(coord);
       }
       else {
-        if (scaleY(xyValues[1][judgementCount])<target) {
+        if (trueValue<target) {
           svgY.select("#temp_blue").remove();
           blueRect = blueYRect(coord);
           redYRect();
@@ -285,11 +285,11 @@ function barPlot(xyValues, currentMode, expCondition){
           delay(function(){
           if (judgementCount != totalJudgements) {
             redYRect();
-            if (scaleY(xyValues[1][judgementCount]) >= target) {
+            if (trueValue >= target) {
               svgY.select("#temp_blue").remove();
               blueRect = blueYRect(coord);
             }
-            if (Math.abs(scaleY(xyValues[1][judgementCount]) - target) <= accErrorMargin*heightY/2 || currentMode.includes("test")) {
+            if (Math.abs(trueValue - target) <= accErrorMargin*heightY/2 || currentMode.includes("test")) {
               closeGuess = true;
             }
             if (closeGuess) {
@@ -318,7 +318,7 @@ function barPlot(xyValues, currentMode, expCondition){
                   blueXRect.attr("width", scaleX(xyValues[0][judgementCount]));
                   if(debugmode){
                     errorMargin 
-                      .attr('y', paddedHeightY - scaleY(xyValues[1][judgementCount]) - accErrorMargin*heightY/2)
+                      .attr('y', paddedHeightY - trueValue - accErrorMargin*heightY/2)
                       .attr('height', accErrorMargin*heightY);
                   }
                   selection_made = false;
