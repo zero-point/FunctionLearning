@@ -246,6 +246,9 @@ function barPlot(xyValues, currentMode, expCondition){
   var submitted = false;
   openDescr(currentMode+"-"+expCondition[0]);
   var finished = true;
+  var tempListOfAttValues = [];
+  var tempListOfAccValues = [];
+  var tempListOfAllValues = [];
   function clicked(d){
     if (d3.event.defaultPrevented) return; // dragged
     var coord = Math.round(Number(d3.mouse(this)[1]));
@@ -277,6 +280,8 @@ function barPlot(xyValues, currentMode, expCondition){
         var key = e.keyCode || e.which;
         if(key === 32 && selection_made && finished){
           finished = false;
+          var savedAllInfo = {currentMode: currentMode, judgement: judgementCount+1, x: xyValues[0][judgementCount], scaledX: scaleX(xyValues[0][judgementCount]), trueY:trueValue, predY: target, timestamp: Date.now()};
+          tempListOfAllValues.push(savedAllInfo);
           delay(function(){
           if (judgementCount != totalJudgements) {
             redYRect();
@@ -291,8 +296,18 @@ function barPlot(xyValues, currentMode, expCondition){
               var mTimer2 = setTimeout(function() {
               // TODO: in training should we force the user to see feedback or check for feedback (enter not allowed until after space)
               submittedPoints.push(target);
-              condSubmittedPoints.push(target);
+              var savedAccInfo = {currentMode: currentMode, judgement: judgementCount+1, x: xyValues[0][judgementCount], scaledX: scaleX(xyValues[0][judgementCount]), trueY:trueValue, predY: target, timestamp: Date.now()};
+              tempListOfAccValues.push(savedAccInfo);
               closeGuess = false;
+              if (tempListOfAttValues !== undefined && tempListOfAttValues.length !== 0) {
+                attemptedSubmissions.push(tempListOfAttValues);
+              }
+              acceptedSubmissions.push(tempListOfAccValues);
+              allSubmissions.push(tempListOfAllValues);
+              tempListOfAttValues = [];
+              tempListOfAccValues = [];
+              tempListOfAllValues = [];
+
               judgementCount += 1;
               if (judgementCount != totalJudgements) {
                   openMsg(true, judgementCount, currentMode);
@@ -325,6 +340,8 @@ function barPlot(xyValues, currentMode, expCondition){
               }
               }, 600);
             } else {
+              var savedAttInfo = {currentMode: currentMode, judgement: judgementCount+1, x: xyValues[0][judgementCount], scaledX: scaleX(xyValues[0][judgementCount]), trueY:trueValue, predY: target, timestamp: Date.now()};
+              tempListOfAttValues.push(savedAttInfo);
               finished = true;
               openMsg(false, judgementCount, currentMode);
             }
@@ -487,13 +504,15 @@ function scatterFullMemPlot(xyValues,currentMode,expCondition){
   var last_sel_circle;
   var submitted = false;
   var finished = true;
+  var tempListOfAttValues = [];
+  var tempListOfAccValues = [];
+  var tempListOfAllValues = [];
   function clicked(d, i) {
     if (d3.event.defaultPrevented) return; // dragged
     d3.select(this).on('mousedown.drag', null);
     var coordinates = d3.mouse(d3.select('.content').node());
     var target = coordinates[1];
     chosenPoints.push(target);
-    condChosenPoints.push(target);
     if (chart.select("#last") != undefined){
       chart.select("#last").remove();
     }
@@ -509,14 +528,17 @@ function scatterFullMemPlot(xyValues,currentMode,expCondition){
       var key = e.keyCode || e.which;
       if(key === 32 && selection_made && finished){
         finished = false;
+        var savedAllInfo = {currentMode: currentMode, judgement: judgementCount+1, x: xyValues[0][judgementCount], scaledX: scaleX(xyValues[0][judgementCount]), trueY:trueValue, predY: target, timestamp: Date.now()};
+        tempListOfAllValues.push(savedAllInfo);
         delay(function(){
           if (judgementCount != totalJudgements) {
             if (Math.abs(trueValue - target) <= accErrorMargin*height/2 || currentMode.includes("test")) {
               closeGuess = true;
             }
             if (closeGuess) {
+              var savedAccInfo = {currentMode: currentMode, judgement: judgementCount+1, x: xyValues[0][judgementCount], scaledX: scaleX(xyValues[0][judgementCount]), trueY:trueValue, predY: target, timestamp: Date.now()};
+              tempListOfAccValues.push(savedAccInfo);
               submittedPoints.push(target);
-              condSubmittedPoints.push(target);
               closeGuess = false;
               if (currentMode.includes("train")) {
                 chart.append("circle")
@@ -537,6 +559,18 @@ function scatterFullMemPlot(xyValues,currentMode,expCondition){
                 .attr("width", widthOfBuffer)
                 .attr("height", height)
                 .on("click", clicked);
+
+              if (tempListOfAttValues !== undefined && tempListOfAttValues.length !== 0) {
+                attemptedSubmissions.push(tempListOfAttValues);
+              }
+              acceptedSubmissions.push(tempListOfAccValues);
+              allSubmissions.push(tempListOfAllValues);
+              tempListOfAttValues = [];
+              tempListOfAccValues = [];
+              tempListOfAllValues = [];
+              //console.log(attemptedSubmissions)
+              //console.log(acceptedSubmissions);
+              //console.log(allSubmissions);
 
               judgementCount += 1;
               if(judgementCount!=totalJudgements){
@@ -572,6 +606,8 @@ function scatterFullMemPlot(xyValues,currentMode,expCondition){
               }
             }
             else {
+                var savedAttInfo = {currentMode: currentMode, judgement: judgementCount+1, x: xyValues[0][judgementCount], scaledX: scaleX(xyValues[0][judgementCount]), trueY:trueValue, predY: target, timestamp: Date.now()};
+                tempListOfAttValues.push(savedAttInfo);
                 if (currentMode.includes("train")) {
                   feed.attr("cx", currloc )
                       .attr("cy", margin.top + scaleY(xyValues[1][judgementCount]))
@@ -727,13 +763,15 @@ function scatterNoMemPlot(xyValues,currentMode,expCondition){
   }
   var submitted = false;
   var finished = true;
+  var tempListOfAttValues = [];
+  var tempListOfAccValues = [];
+  var tempListOfAllValues = [];
   function clicked(d, i) {
     if (d3.event.defaultPrevented) return; // dragged
     d3.select(this).on('mousedown.drag', null);
     var coordinates = d3.mouse(d3.select('.content').node());
     var target = coordinates[1];
     chosenPoints.push(target);
-    condChosenPoints.push(target);
     if (chart.select("#last") != undefined){
       chart.select("#last").remove();
     }
@@ -750,12 +788,16 @@ function scatterNoMemPlot(xyValues,currentMode,expCondition){
       var key = e.keyCode || e.which;
       if(key === 32 && selection_made && finished){
         finished = false;
+        var savedAllInfo = {currentMode: currentMode, judgement: judgementCount+1, x: xyValues[0][judgementCount], scaledX: scaleX(xyValues[0][judgementCount]), trueY:trueValue, predY: target, timestamp: Date.now()};
+        tempListOfAllValues.push(savedAllInfo);
         delay(function(){
           if (judgementCount != totalJudgements) {
             if (Math.abs(trueValue - target) <= accErrorMargin*height/2 || currentMode.includes("test")) {
               closeGuess = true;
             }
             if (closeGuess) {
+              var savedAccInfo = {currentMode: currentMode, judgement: judgementCount+1, x: xyValues[0][judgementCount], scaledX: scaleX(xyValues[0][judgementCount]), trueY:trueValue, predY: target, timestamp: Date.now()};
+              tempListOfAccValues.push(savedAccInfo);
               if(currentMode.includes("train")){
                 chart.append("circle")
                   .attr("id","feed")
@@ -765,8 +807,17 @@ function scatterNoMemPlot(xyValues,currentMode,expCondition){
                   .style("fill", "red");
               }
               submittedPoints.push(target);
-              condSubmittedPoints.push(target);
               closeGuess = false;
+
+              if (tempListOfAttValues !== undefined && tempListOfAttValues.length !== 0) {
+                attemptedSubmissions.push(tempListOfAttValues);
+              }
+              acceptedSubmissions.push(tempListOfAccValues);
+              allSubmissions.push(tempListOfAllValues);
+              tempListOfAttValues = [];
+              tempListOfAccValues = [];
+              tempListOfAllValues = [];
+
               judgementCount += 1;
               if (judgementCount != totalJudgements) {
                 var mTimerScatter = setTimeout(function(){ 
@@ -803,6 +854,8 @@ function scatterNoMemPlot(xyValues,currentMode,expCondition){
               }
             }
             else {
+              var savedAttInfo = {currentMode: currentMode, judgement: judgementCount+1, x: xyValues[0][judgementCount], scaledX: scaleX(xyValues[0][judgementCount]), trueY:trueValue, predY: target, timestamp: Date.now()};
+              tempListOfAttValues.push(savedAttInfo);
               finished = true;
               if (currentMode.includes("train")) {
                 feed
@@ -853,15 +906,13 @@ function submitPoints(completed){
       'endTime': new Date().toJSON(),
       'expData': {
         "allTrueValues": allTrueValues,
-	"scaledTrueValues": scaledTrueValues,
+      	"scaledTrueValues": scaledTrueValues,
         "allChosenPoints": chosenPoints,
-        "allSubmittedPoints": submittedPoints
+        "allSubmittedPoints": submittedPoints,
+      	"attemptedSubmissions": attemptedSubmissions,
+        "acceptedSubmissions": acceptedSubmissions,
+        "allSubmissions": allSubmissions,
       },
-    /* 'currentCondExpData': {
-         "condTrueValues": condTrueValues,
-         "condChosenPoints": condChosenPoints,
-         "condSubmittedPoints": condSubmittedPoints
-      },*/
       'surveyResp': surveyResp
     }
 
@@ -928,8 +979,6 @@ function checkStatus(){
       presentationDict[expCondition[0]](xyValues,currentMode,expCondition);
   }
   else {
-    condSubmittedPoints = [];
-    condChosenPoints = [];
     currentCondition += 1;
     //document.getElementsByClassName("progress-container")[0].style.display = "inline";
     //var elem = document.getElementsByClassName("progress-bar");
@@ -945,7 +994,6 @@ function checkStatus(){
       var xValue = positions.map(function(x) { return x+1; });
       var yValue = xValue.map(function(x) {return functionDict[expCondition[1]](x);});
       xyValues = [xValue,yValue];
-      condTrueValues = xyValues;
       allTrueValues.push(xyValues);
 
       /* DISPLAYING INSTRUCTIONS */
@@ -1182,23 +1230,26 @@ var presentationDict = {
 };
 
 /* GENERATING IDENTIFIER */
-var experimentID = "179033";
+var experimentID = "funMemDebug";
 var sessionID;
 var conditionID;
 
 var params = getAllUrlParams();
 if (params["sid"]) {
   sessionID = params["sid"];
-} else if (params["sessionid"]) {
+} 
+else if(params["sessionid"]){
   sessionID = params["sessionid"];
-} else {
-  sessionID = "" + Math.floor(Math.random() * 1000000 + 1);
+}
+else {
+  sessionID = ""+Math.floor((Math.random() * 1000000) + 1);
 }
 
 if (params["cid"]) {
   conditionID = params["cid"];
-} else {
-  if (params["conditionid"]) {
+}
+else{
+  if(params["conditionid"]){
     conditionID = params["conditionid"];
   }
 }
@@ -1223,9 +1274,11 @@ var allTrueValues = [];
 var scaledTrueValues = [];
 var submittedPoints = [];   // values submitted by the user
 var chosenPoints = [];      // values chosen but not submitted by the user
-var condTrueValues = [];
-var condSubmittedPoints = [];
-var condChosenPoints = [];
+var attemptedSubmissions = [];
+var acceptedSubmissions = [];
+var allSubmissions = [];
+//var attemptedSubmissionsAll = [];
+//var acceptedSubmissionsAll = [];
 var currentConditionNames = [];
 var currentConditionCodes = [];
 
