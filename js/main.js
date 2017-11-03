@@ -246,6 +246,9 @@ function barPlot(xyValues, currentMode, expCondition){
   var submitted = false;
   openDescr(currentMode+"-"+expCondition[0]);
   var finished = true;
+  var tempListOfAttValues = [];
+  var tempListOfAccValues = [];
+  var tempListOfAllValues = [];
   function clicked(d){
     if (d3.event.defaultPrevented) return; // dragged
     var coord = Math.round(Number(d3.mouse(this)[1]));
@@ -1227,7 +1230,7 @@ var presentationDict = {
 };
 
 /* GENERATING IDENTIFIER */
-var experimentID = "179042";
+var experimentID = "funMem";
 var sessionID;
 var conditionID;
 
