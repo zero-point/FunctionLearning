@@ -897,18 +897,18 @@ function submitPoints(completed){
       'conditionId': conditionID,       // the condition ID
       'debugmode': debugmode,           // debug or live
       'completed': completed,           // user finished all tasks
-      'finishedConditions': finishedConditions, // tasks finished
-      'currentCondition': currentCondition,  // current task
+      //'finishedConditions': finishedConditions, // tasks finished   // redundant
+      //'currentCondition': currentCondition,  // current task        // redundant
       'currentConditionNames': currentConditionNames,
       'currentConditionCodes': currentConditionCodes,
       'currentMode': currentMode,
       'startTime': startTime,
       'endTime': new Date().toJSON(),
       'expData': {
-        "allTrueValues": allTrueValues,
-      	"scaledTrueValues": scaledTrueValues,
+        //"allTrueValues": allTrueValues,                             // redundant
+        //"scaledTrueValues": scaledTrueValues,                       // redundant
         "allChosenPoints": chosenPoints,
-        "allSubmittedPoints": submittedPoints,
+        //"allSubmittedPoints": submittedPoints,                      // redundant
       	"attemptedSubmissions": attemptedSubmissions,
         "acceptedSubmissions": acceptedSubmissions,
         "allSubmissions": allSubmissions,
