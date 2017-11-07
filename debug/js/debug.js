@@ -537,6 +537,7 @@ function scatterFullMemPlot(xyValues,currentMode,expCondition){
             }
             if (closeGuess) {
               var savedAccInfo = {currentMode: currentMode, judgement: judgementCount+1, x: xyValues[0][judgementCount], scaledX: scaleX(xyValues[0][judgementCount]), trueY:trueValue, predY: target, timestamp: Date.now()};
+              console.log(savedAccInfo);
               tempListOfAccValues.push(savedAccInfo);
               submittedPoints.push(target);
               closeGuess = false;
@@ -925,6 +926,7 @@ function submitPoints(completed){
       }
     }
 
+  console.log(dataChunk);
   try { 
     chunker.sendChunk(dataChunk);
   } catch (e) {
