@@ -1295,7 +1295,7 @@ var currentCondition = 0;
 var expConditions = [];
 var expCondition;
 var currentMode = "start";  //experimental mode (start | train | test)
-const debugmode = true;     // change this for debugging purposes
+const debugmode = false;     // change this for debugging purposes
 
 introduction();
 
