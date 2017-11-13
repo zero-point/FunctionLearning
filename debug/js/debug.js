@@ -150,7 +150,7 @@ function barPlot(xyValues, currentMode, expCondition) {
   document.querySelector(".container").appendChild(vert);
 
   if (debugmode) {
-    judgementCount = totalJudgements - 5;
+    judgementCount = 0;//totalJudgements - 5;
     document.getElementById("judgementCount").innerHTML =
       "Judgement " + (judgementCount + 1) + " out of " + totalJudgements;
   } else {
@@ -460,7 +460,7 @@ function scatterFullMemPlot(xyValues, currentMode, expCondition) {
   document.querySelector(".container").appendChild(content);
 
   if (debugmode) {
-    judgementCount = totalJudgements - 5;
+    judgementCount = 0;//totalJudgements - 5;
     document.getElementById("judgementCount").innerHTML =
       "Judgement " + (judgementCount + 1) + " out of " + totalJudgements;
   } else {
@@ -794,7 +794,7 @@ function scatterNoMemPlot(xyValues, currentMode, expCondition) {
   document.querySelector(".container").appendChild(content);
 
   if (debugmode) {
-    judgementCount = totalJudgements - 5;
+    judgementCount = 0;//totalJudgements - 5;
     document.getElementById("judgementCount").innerHTML =
       "Judgement " + (judgementCount + 1) + " out of " + totalJudgements;
   } else {

@@ -154,7 +154,7 @@ function barPlot(xyValues, currentMode, expCondition) {
     document.getElementById("judgementCount").innerHTML =
       "Judgement " + (judgementCount + 1) + " out of " + totalJudgements;
   } else {
-    judgementCount = 30;
+    judgementCount = 0;
   }
 
   var closeGuess = false;
@@ -464,7 +464,7 @@ function scatterFullMemPlot(xyValues, currentMode, expCondition) {
     document.getElementById("judgementCount").innerHTML =
       "Judgement " + (judgementCount + 1) + " out of " + totalJudgements;
   } else {
-    judgementCount = 30;
+    judgementCount = 0;
   }
 
   var closeGuess = false;
@@ -798,7 +798,7 @@ function scatterNoMemPlot(xyValues, currentMode, expCondition) {
     document.getElementById("judgementCount").innerHTML =
       "Judgement " + (judgementCount + 1) + " out of " + totalJudgements;
   } else {
-    judgementCount = 30;
+    judgementCount = 0;
   }
 
   var closeGuess = false;
