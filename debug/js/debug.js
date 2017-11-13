@@ -154,7 +154,7 @@ function barPlot(xyValues, currentMode, expCondition) {
     document.getElementById("judgementCount").innerHTML =
       "Judgement " + (judgementCount + 1) + " out of " + totalJudgements;
   } else {
-    judgementCount = 0;
+    judgementCount = 30;
   }
 
   var closeGuess = false;
@@ -406,7 +406,6 @@ function barPlot(xyValues, currentMode, expCondition) {
                   } else {
                     finished = true;
                     document.onkeyup = function(e) {};
-                    document.onclick = function() {};
                     //svgY.on("click", function(d) {});
                     //d3.select(".container").selectAll("svg").remove();
                     finishedConditions[currentCondition - 1] = true;
@@ -437,7 +436,6 @@ function barPlot(xyValues, currentMode, expCondition) {
             } else {
               finished = true;
               document.onkeyup = function(e) {};
-              document.onclick = function() {};
               //svgY.on("click", function(d) {});
               //d3.select(".container").selectAll("svg").remove();
               finishedConditions[currentCondition - 1] = true;
@@ -466,7 +464,7 @@ function scatterFullMemPlot(xyValues, currentMode, expCondition) {
     document.getElementById("judgementCount").innerHTML =
       "Judgement " + (judgementCount + 1) + " out of " + totalJudgements;
   } else {
-    judgementCount = 0;
+    judgementCount = 30;
   }
 
   var closeGuess = false;
@@ -772,7 +770,6 @@ function scatterFullMemPlot(xyValues, currentMode, expCondition) {
           } else {
             finished = true;
             document.onkeyup = function(e) {};
-            document.onclick = function() {};
             //svgY.on("click", function(d) {});
             //d3.select(".container").selectAll("svg").remove();
             finishedConditions[currentCondition - 1] = true;
@@ -800,7 +797,7 @@ function scatterNoMemPlot(xyValues, currentMode, expCondition) {
     document.getElementById("judgementCount").innerHTML =
       "Judgement " + (judgementCount + 1) + " out of " + totalJudgements;
   } else {
-    judgementCount = 0;
+    judgementCount = 30;
   }
 
   var closeGuess = false;
@@ -1043,7 +1040,6 @@ function scatterNoMemPlot(xyValues, currentMode, expCondition) {
               } else {
                 finished = true;
                 document.onkeyup = function(e) {};
-                document.onclick = function() {};
                 //svgY.on("click", function(d) {});
                 //d3.select(".container").selectAll("svg").remove();
                 finishedConditions[currentCondition - 1] = true;
@@ -1081,7 +1077,6 @@ function scatterNoMemPlot(xyValues, currentMode, expCondition) {
           } else {
             finished = true;
             document.onkeyup = function(e) {};
-            document.onclick = function() {};
             //svgY.on("click", function(d) {});
             //d3.select(".container").selectAll("svg").remove();
             finishedConditions[currentCondition - 1] = true;
@@ -1178,7 +1173,6 @@ ChunkWs.prototype = {
 };
 
 function checkStatus() {
-  //closeDescr();
   document.querySelector(".instructionText").innerHTML = "";
   document.querySelector(".container").innerHTML = "";
   document.querySelector(".instructions").classList.add("unselectable");
@@ -1201,6 +1195,7 @@ function checkStatus() {
     finishedTransition = true;
     presentationDict[expCondition[0]](xyValues, currentMode, expCondition);
   } else {
+    closeDescr();
     currentCondition += 1;
     //document.getElementsByClassName("progress-container")[0].style.display = "inline";
     //var elem = document.getElementsByClassName("progress-bar");
