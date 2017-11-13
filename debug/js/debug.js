@@ -730,6 +730,7 @@ function scatterFullMemPlot(xyValues, currentMode, expCondition) {
                 selection_made = false;
                 finished = true;
               } else {
+                document.onkeyup = function(e) {};
                 //buffer.on("click", function(d){});
                 //d3.select(".content").selectAll("svg").remove();
                 finishedTransition = false;
@@ -1570,6 +1571,6 @@ var expConditions = [];
 var expCondition;
 var finishedTransition = true;
 var currentMode = "start"; //experimental mode (start | train | test)
-const debugmode = false; // change this for debugging purposes
+const debugmode = true; // change this for debugging purposes
 
 introduction();
