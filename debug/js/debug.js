@@ -150,7 +150,7 @@ function barPlot(xyValues, currentMode, expCondition) {
   document.querySelector(".container").appendChild(vert);
 
   if (debugmode) {
-    judgementCount = 0;//totalJudgements - 5;
+    judgementCount = totalJudgements - 5;
     document.getElementById("judgementCount").innerHTML =
       "Judgement " + (judgementCount + 1) + " out of " + totalJudgements;
   } else {
@@ -460,7 +460,7 @@ function scatterFullMemPlot(xyValues, currentMode, expCondition) {
   document.querySelector(".container").appendChild(content);
 
   if (debugmode) {
-    judgementCount = 0;//totalJudgements - 5;
+    judgementCount = totalJudgements - 5;
     document.getElementById("judgementCount").innerHTML =
       "Judgement " + (judgementCount + 1) + " out of " + totalJudgements;
   } else {
@@ -794,7 +794,7 @@ function scatterNoMemPlot(xyValues, currentMode, expCondition) {
   document.querySelector(".container").appendChild(content);
 
   if (debugmode) {
-    judgementCount = 0;//totalJudgements - 5;
+    judgementCount = totalJudgements - 5;
     document.getElementById("judgementCount").innerHTML =
       "Judgement " + (judgementCount + 1) + " out of " + totalJudgements;
   } else {
@@ -1132,10 +1132,18 @@ function submitPoints(completed) {
   };
 
   console.log(dataChunk);
+  document.querySelector(".progress-container").remove();
+  document.querySelector(".instructionText").innerHTML = "";
+  document.querySelector(".container").innerHTML = "";
   try {
-    chunker.sendChunk(dataChunk);
+    document.querySelector("#main").innerHTML = '<h2 id=\"thankyou\">Processing, please wait ... </h2>';
+    chunker.sendChunk(dataChunk,function(){
+      console.log("Done!");
+      document.querySelector("#main").innerHTML = '<h2 id=\"thankyou\">Thank you.<br/><br/> Please copy this code as proof<br/> of your experiment completion:<br/><br/> <b>' + secret + sessionID.substring(0, 4) + "</b></h2>";
+    })
   } catch (e) {
-    throw new Error("Sending data to server was unsuccessful: " + e);
+    throw new Error('Sending data to server was unsuccessful: '+e);
+    document.querySelector("#main").innerHTML = '<h2 id=\"thankyou\">There was an error.<br/><br/> Please contact us and let us know at s1143039@sms.ed.ac.uk </h2>';
   }
   return;
 }
@@ -1158,14 +1166,14 @@ function ChunkWs(theChunkUrl, messageCallback) {
     self.wsError = 1;
   };
 
-  this.sendChunk = function(dataChunk) {
-    if (dataChunk["experimentId"] == null)
-      console.error("Requires defined experimentId");
-    if (dataChunk["sessionId"] == null)
-      console.error("Requires defined sessionId");
-    var dataStr = JSON.stringify(dataChunk);
-    self.wso.send(dataStr);
-    self.doneState = 1;
+  this.sendChunk = function(dataChunk,callback) {
+      if(dataChunk['experimentId'] == null) console.error("Requires defined experimentId")
+      if(dataChunk['sessionId'] == null) console.error("Requires defined sessionId")
+      var dataStr = JSON.stringify(dataChunk);
+      //self.wso.send(dataStr);
+      console.log(dataStr);
+      self.doneState = 1;
+      callback();
   };
 }
 
