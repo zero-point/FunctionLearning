@@ -1507,7 +1507,7 @@ var presentationDict = {
 };
 
 /* GENERATING IDENTIFIER */
-var experimentID = "funMemDebug";
+var experimentID = "funMem";
 var sessionID;
 var conditionID;
 
