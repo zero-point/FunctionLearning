@@ -293,7 +293,7 @@ function barPlot(xyValues, currentMode, expCondition) {
   var tempListOfAccValues = [];
   var tempListOfAllValues = [];
   function clicked(d) {
-    console.log("clicked");
+    //console.log("clicked");
     if (d3.event.defaultPrevented) return; // dragged
     var coord = Math.round(Number(d3.mouse(this)[1]));
     if (coord >= margins && coord <= paddedHeightY) {
@@ -320,10 +320,10 @@ function barPlot(xyValues, currentMode, expCondition) {
       }
       selection_made = true;
       document.onkeyup = function(e) {
-        console.log("key pressed");
+        //console.log("key pressed");
         var key = e.keyCode || e.which;
         if (key === 32 && selection_made && finished) {
-          console.log("space");
+          //console.log("space");
           finished = false;
           var savedAllInfo = {
             currentMode: currentMode,
@@ -361,7 +361,7 @@ function barPlot(xyValues, currentMode, expCondition) {
                     predY: target,
                     timestamp: Date.now()
                   };
-                  console.log(savedAccInfo);
+                  //console.log(savedAccInfo);
                   tempListOfAccValues.push(savedAccInfo);
                   closeGuess = false;
                   if (
@@ -610,7 +610,7 @@ function scatterFullMemPlot(xyValues, currentMode, expCondition) {
   var tempListOfAccValues = [];
   var tempListOfAllValues = [];
   function clicked(d, i) {
-    console.log("clicked");
+    //console.log("clicked");
     if (d3.event.defaultPrevented) return; // dragged
     d3.select(this).on("mousedown.drag", null);
     var coordinates = d3.mouse(d3.select(".content").node());
@@ -628,10 +628,10 @@ function scatterFullMemPlot(xyValues, currentMode, expCondition) {
     var trueValue = scaleY(xyValues[1][judgementCount]);
     // SPACE KEY SAVES DATA
     document.onkeyup = function(e) {
-      console.log("key pressed");
+      //console.log("key pressed");
       var key = e.keyCode || e.which;
       if (key === 32 && selection_made && finished && finishedTransition) {
-        console.log("space");
+        //console.log("space");
         finished = false;
         var savedAllInfo = {
           currentMode: currentMode,
@@ -661,7 +661,7 @@ function scatterFullMemPlot(xyValues, currentMode, expCondition) {
                 predY: target,
                 timestamp: Date.now()
               };
-              console.log(savedAccInfo);
+              //console.log(savedAccInfo);
               tempListOfAccValues.push(savedAccInfo);
               submittedPoints.push(target);
               closeGuess = false;
@@ -932,7 +932,7 @@ function scatterNoMemPlot(xyValues, currentMode, expCondition) {
   var tempListOfAccValues = [];
   var tempListOfAllValues = [];
   function clicked(d, i) {
-    console.log("clicked");
+    //console.log("clicked");
     if (d3.event.defaultPrevented) return; // dragged
     d3.select(this).on("mousedown.drag", null);
     var coordinates = d3.mouse(d3.select(".content").node());
@@ -952,10 +952,10 @@ function scatterNoMemPlot(xyValues, currentMode, expCondition) {
 
     // SPACE KEY SAVES DATA
     document.onkeyup = function(e) {
-      console.log("key pressed");
+      //console.log("key pressed");
       var key = e.keyCode || e.which;
       if (key === 32 && selection_made && finished) {
-        console.log("space");
+        //console.log("space");
         finished = false;
         var savedAllInfo = {
           currentMode: currentMode,
@@ -985,7 +985,7 @@ function scatterNoMemPlot(xyValues, currentMode, expCondition) {
                 predY: target,
                 timestamp: Date.now()
               };
-              console.log(savedAccInfo);
+              //console.log(savedAccInfo);
               tempListOfAccValues.push(savedAccInfo);
               if (currentMode.includes("train")) {
                 chart
@@ -1097,6 +1097,9 @@ function scatterNoMemPlot(xyValues, currentMode, expCondition) {
 
 function submitPoints(completed) {
   if (!completed) return;
+
+  var secret = ""+Math.floor((Math.random() * 10000) + 1);
+
   var dataChunk = {
     experimentId: experimentID, // this project ID
     sessionId: sessionID, // the user session ID
@@ -1119,7 +1122,8 @@ function submitPoints(completed) {
       acceptedSubmissions: acceptedSubmissions,
       allSubmissions: allSubmissions
     },
-    surveyResp: surveyResp
+    surveyResp: surveyResp,
+    secret: secret
   };
 
   var testChunk = {
@@ -1131,11 +1135,18 @@ function submitPoints(completed) {
     }
   };
 
-  console.log(dataChunk);
+  //console.log(dataChunk);
+  //document.querySelector(".progress-container").remove();
+  document.querySelector(".instructionText").innerHTML = "";
+  document.querySelector(".container").innerHTML = "";
   try {
-    chunker.sendChunk(dataChunk);
+    document.querySelector("#main").innerHTML = '<h2 id=\"thankyou\">Processing, please wait ... </h2>';
+    chunker.sendChunk(dataChunk,function(){
+      document.querySelector("#main").innerHTML = '<h2 id=\"thankyou\">Thank you.<br/><br/> Please copy this code as proof<br/> of your experiment completion:<br/><br/> <b>' + secret + sessionID.substring(0, 4) + "</b></h2>";
+    })
   } catch (e) {
-    throw new Error("Sending data to server was unsuccessful: " + e);
+    throw new Error('Sending data to server was unsuccessful: '+e);
+    document.querySelector("#main").innerHTML = '<h2 id=\"thankyou\">There was an error.<br/><br/> Please contact us and let us know at s1143039@sms.ed.ac.uk </h2>';
   }
   return;
 }
@@ -1148,24 +1159,23 @@ function ChunkWs(theChunkUrl, messageCallback) {
   var self = this; // Can't use 'this' to refer to object inside functions
   this.wso.onmessage = function(event) {
     message = JSON.parse(event.data);
-    console.log("received websocket message: " + message);
-    console.log("this: " + JSON.stringify(self));
+    //console.log("received websocket message: " + message);
+    //console.log("this: " + JSON.stringify(self));
     messageCallback(self.doneState, self.wsError, message);
   };
 
   this.wso.onerror = function(error) {
-    console.log("websocket error detected: " + JSON.stringify(error));
+    //console.log("websocket error detected: " + JSON.stringify(error));
     self.wsError = 1;
   };
 
-  this.sendChunk = function(dataChunk) {
-    if (dataChunk["experimentId"] == null)
-      console.error("Requires defined experimentId");
-    if (dataChunk["sessionId"] == null)
-      console.error("Requires defined sessionId");
-    var dataStr = JSON.stringify(dataChunk);
-    self.wso.send(dataStr);
-    self.doneState = 1;
+  this.sendChunk = function(dataChunk,callback) {
+      if(dataChunk['experimentId'] == null) console.error("Requires defined experimentId")
+      if(dataChunk['sessionId'] == null) console.error("Requires defined sessionId")
+      var dataStr = JSON.stringify(dataChunk);
+      self.wso.send(dataStr);
+      self.doneState = 1;
+      callback();
   };
 }
 
@@ -1395,14 +1405,6 @@ function survey() {
         openAlert("Please answer all the questions");
       } else {
         submitPoints(true);
-        document.querySelector(".progress-container").remove();
-        document.querySelector(".instructionText").innerHTML = "";
-        document.querySelector(".container").innerHTML = "";
-
-        document.querySelector("#main").innerHTML =
-          '<h2 id="thankyou">Thank you.<br/><br/> Please copy this code as proof<br/> of your experiment completion:<br/><br/> <b>' +
-          sessionID.substring(0, 4) +
-          "</b></h2>";
       }
       return false;
     };
@@ -1505,7 +1507,7 @@ var presentationDict = {
 };
 
 /* GENERATING IDENTIFIER */
-var experimentID = "funMem";
+var experimentID = "funMemDebug";
 var sessionID;
 var conditionID;
 
