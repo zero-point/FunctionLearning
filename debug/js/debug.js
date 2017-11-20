@@ -1097,6 +1097,9 @@ function scatterNoMemPlot(xyValues, currentMode, expCondition) {
 
 function submitPoints(completed) {
   if (!completed) return;
+
+  var secret = ""+Math.floor((Math.random() * 10000) + 1);
+
   var dataChunk = {
     experimentId: experimentID, // this project ID
     sessionId: sessionID, // the user session ID
@@ -1119,7 +1122,8 @@ function submitPoints(completed) {
       acceptedSubmissions: acceptedSubmissions,
       allSubmissions: allSubmissions
     },
-    surveyResp: surveyResp
+    surveyResp: surveyResp,
+    secret: secret
   };
 
   var testChunk = {
@@ -1139,7 +1143,7 @@ function submitPoints(completed) {
     document.querySelector("#main").innerHTML = '<h2 id=\"thankyou\">Processing, please wait ... </h2>';
     chunker.sendChunk(dataChunk,function(){
       console.log("Done!");
-      document.querySelector("#main").innerHTML = '<h2 id=\"thankyou\">Thank you.<br/><br/> Please copy this code as proof<br/> of your experiment completion:<br/><br/> <b>' + sessionID.substring(0, 4) + "</b></h2>";
+      document.querySelector("#main").innerHTML = '<h2 id=\"thankyou\">Thank you.<br/><br/> Please copy this code as proof<br/> of your experiment completion:<br/><br/> <b>' + secret + sessionID.substring(0, 4) + "</b></h2>";
     })
   } catch (e) {
     throw new Error('Sending data to server was unsuccessful: '+e);
@@ -1170,7 +1174,7 @@ function ChunkWs(theChunkUrl, messageCallback) {
       if(dataChunk['experimentId'] == null) console.error("Requires defined experimentId")
       if(dataChunk['sessionId'] == null) console.error("Requires defined sessionId")
       var dataStr = JSON.stringify(dataChunk);
-      //self.wso.send(dataStr);
+      self.wso.send(dataStr);
       console.log(dataStr);
       self.doneState = 1;
       callback();
@@ -1403,14 +1407,6 @@ function survey() {
         openAlert("Please answer all the questions");
       } else {
         submitPoints(true);
-        //document.querySelector(".progress-container").remove();
-        document.querySelector(".instructionText").innerHTML = "";
-        //document.querySelector(".container").innerHTML = "";
-
-        document.querySelector("#main").innerHTML =
-          '<h2 id="thankyou">Thank you.<br/><br/> Please copy this code as proof<br/> of your experiment completion:<br/><br/> <b>' +
-          sessionID.substring(0, 4) +
-          "</b></h2>";
       }
       return false;
     };
