@@ -1132,14 +1132,14 @@ function submitPoints(completed) {
   };
 
   console.log(dataChunk);
-  document.querySelector(".progress-container").remove();
+  //document.querySelector(".progress-container").remove();
   document.querySelector(".instructionText").innerHTML = "";
   document.querySelector(".container").innerHTML = "";
   try {
     document.querySelector("#main").innerHTML = '<h2 id=\"thankyou\">Processing, please wait ... </h2>';
     chunker.sendChunk(dataChunk,function(){
       console.log("Done!");
-      document.querySelector("#main").innerHTML = '<h2 id=\"thankyou\">Thank you.<br/><br/> Please copy this code as proof<br/> of your experiment completion:<br/><br/> <b>' + secret + sessionID.substring(0, 4) + "</b></h2>";
+      document.querySelector("#main").innerHTML = '<h2 id=\"thankyou\">Thank you.<br/><br/> Please copy this code as proof<br/> of your experiment completion:<br/><br/> <b>' + sessionID.substring(0, 4) + "</b></h2>";
     })
   } catch (e) {
     throw new Error('Sending data to server was unsuccessful: '+e);
@@ -1403,9 +1403,9 @@ function survey() {
         openAlert("Please answer all the questions");
       } else {
         submitPoints(true);
-        document.querySelector(".progress-container").remove();
+        //document.querySelector(".progress-container").remove();
         document.querySelector(".instructionText").innerHTML = "";
-        document.querySelector(".container").innerHTML = "";
+        //document.querySelector(".container").innerHTML = "";
 
         document.querySelector("#main").innerHTML =
           '<h2 id="thankyou">Thank you.<br/><br/> Please copy this code as proof<br/> of your experiment completion:<br/><br/> <b>' +
